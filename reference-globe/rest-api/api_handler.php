@@ -82,7 +82,7 @@ function register()
 function get_users()
 {
     global $user_model;
-    $sql = "SELECT user_id,name,mobile,email,gender,dob,status,role_id FROM users where 1 ";
+    $sql = "SELECT user_id,name,mobile,email,gender,dob,status,role_id FROM users where 1 ";    
     $data = [
         'is_error' => 0,
         'message' => 'success',

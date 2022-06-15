@@ -20,35 +20,24 @@ if (!empty($_GET['action'])) {
     <div class="table-responsive">
         <?php show_alert(); ?>
         <div class="search-bar">
-            <form>
-                <table class="table table-brodered">
-                    <tr>
-                        <td>Name,Mobile,Email</td>
-                        <td>Action</td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <?php
-                            $search_key = '';
-                            if (isset($_GET['search_key'])) {
-                                $search_key = $_GET['search_key'];
-                            };
-                            ?>
-                            <input class="form-control" type="text" name="search_key" value="<?php echo $search_key; ?>" />
-                        </td>
-                        <td>
-                            <input type="submit" name="search" value="Search" class="btn btn-sm btn-success">
-                            <?php if (isset($_GET['search'])) { ?>
-                                <a href="users.php" class="btn btn-sm btn-warning">Reset</a>
-                            <?php } ?>
-                            <?php if ($db_handler->hasAccess('add')) { ?>
-                                <a href="<?php echo BASE_URL ?>app/user/user-add.php" class="btn btn-sm btn-primary">+Add</a>
-                            <?php } ?>
-                        </td>
-                    </tr>
-                </table>
-            </form>
-
+            <table class="table table-brodered">
+                <tr>
+                    <td>Name,Mobile,Email</td>
+                    <td>Action</td>
+                </tr>
+                <tr>
+                    <td>
+                        <input class="form-control" type="text" id="search_key" name="search_key" />
+                    </td>
+                    <td>
+                        <input type="button"  value="Search" onclick="search_users()" class="btn btn-sm btn-success">
+                        <input type="button"  value="Reset" onclick="reset()" class="btn btn-sm btn-warning">
+                        <?php if ($db_handler->hasAccess('add')) { ?>
+                            <a href="<?php echo BASE_URL ?>app/user/user-add.php" class="btn btn-sm btn-primary">+Add</a>
+                        <?php } ?>
+                    </td>
+                </tr>
+            </table>
         </div>
 
         <div id="table1_error"></div>
@@ -66,51 +55,6 @@ if (!empty($_GET['action'])) {
                 </tr>
             </thead>
             <tbody id="table1">
-            </tbody>
-        </table>
-        <table class="table table-bordered" style="display:none;">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Name</th>
-                    <th>Mobile</th>
-                    <th>Email</th>
-                    <th>Gender</th>
-                    <th>DOB</th>
-                    <th>STATUS</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php
-                $users = $user_model->fetchAll();
-                $sn = 1;
-                foreach ($users as $row) {
-                    $user = $user_model->setUser($row);
-                ?>
-                    <tr>
-                        <td><?php echo $sn; ?></td>
-                        <td><?php echo $user->name; ?></td>
-                        <td><?php echo $user->mobile; ?></td>
-                        <td><?php echo $user->email; ?></td>
-                        <td><?php echo $user->gender; ?></td>
-                        <td><?php echo $user->getStatus(); ?></td>
-                        <td><?php echo date('d/M/Y', strtotime($user->dob)); ?></td>
-                        <td>
-                            <a href="<?php echo BASE_URL ?>app/user/user-edit.php?user_id=<?php echo $user->user_id; ?>" class="btn btn-sm btn-primary">Edit</a>
-                            <?php
-                            if ($user->role_id > 1) { ?>
-                                <a href="#" class="btn btn-sm btn-danger" onclick="userDelete('<?php echo $user->user_id ?>')">Delete</a>
-                            <?php
-                            }
-                            ?>
-                        </td>
-                    </tr>
-                <?php
-                    $sn++;
-                }
-                ?>
-
             </tbody>
         </table>
     </div>
@@ -143,13 +87,38 @@ if (!empty($_GET['action'])) {
         });
     }
 
+    function reset(){
+        $('#search_key').val('');
+        load_users('table1');
+    }
+
+    function search_users() {
+        var tableId = 'table1';
+        var search_key = $('#search_key').val();
+        $.ajax({
+            url: API_BASE_URL + '?action=get_users&search_key=' + search_key,
+            type: 'GET',
+            success: function(response) {
+                if (response.is_error == 0) {
+                    populateTable(tableId, response.data)
+                } else {
+                    $("#" + tableId + "_error").text(response.message);
+                }
+            },
+            error: function(error) {
+                $("#" + response_container_id).text(error);
+            }
+        });
+    }
+
+
 
     function populateTable(tableBodyId, jsonData) {
         var tableHTML = "";
         var count = 1;
         for (var item in jsonData) {
             row = jsonData[item];
-            var editURL = BASE_URL + 'app/user/user-edit.php?user_id=' +row.user_id;
+            var editURL = BASE_URL + 'app/user/user-edit.php?user_id=' + row.user_id;
             tableHTML += "<tr>";
             tableHTML += "<td>" + count + "</td>";
             tableHTML += "<td>" + row.name + "</td>";

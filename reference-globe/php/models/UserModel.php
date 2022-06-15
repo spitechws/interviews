@@ -94,7 +94,7 @@ class UserModel extends BaseModel
     public function fetch($sql, $params)
     {
         return $this->db->select($sql, $params);
-    }
+    }   
 
     public function fetchByPk()
     {
@@ -110,11 +110,9 @@ class UserModel extends BaseModel
             $sql = "SELECT * FROM users where 1 ";
         }     
         $params = [];
-        if (!empty($_GET['search'])) {
-            if (!empty($_GET['search_key'])) {
-                $sql .= "and (`name` like :search_key or `mobile` like :search_key or email like :search_key)";
-                $params['search_key'] = '%' . $_GET['search_key'] . '%';
-            }
+        if (!empty($_GET['search_key'])) {
+            $sql .= "and (`name` like :search_key or `mobile` like :search_key or email like :search_key)";
+            $params['search_key'] = '%' . $_GET['search_key'] . '%';
         }
         return $this->db->select($sql, $params);
     }

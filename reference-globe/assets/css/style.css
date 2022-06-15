@@ -1,6 +1,13 @@
-.mt-20{
+.mt-20 {
     margin-top: 20px;
 }
-.main-content{
+
+.main-content {
     margin-top: 20px;
+}
+
+.error_msg {
+    color: red;
+    text-align: center;
+    margin-top:20px;
 }

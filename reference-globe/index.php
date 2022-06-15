@@ -11,7 +11,7 @@ require_once 'partials/header.php';
             Login
         </div>
         <div class="card-body">
-            <form action="php/login_check.php" method="post">
+            <form id="form1">                
                 <div class="mb-3 mt-3">
                     <label for="email" class="form-label">Email:</label>
                     <input type="email" class="form-control" id="email" placeholder="Enter email" name="email">
@@ -21,9 +21,10 @@ require_once 'partials/header.php';
                     <input type="password" class="form-control" id="password" placeholder="Enter password" name="password">
                 </div>
                 <div class="form-group text-center">
-                    <button type="submit" class="btn btn-primary">Login</button>
+                    <button type="button" class="btn btn-primary" onclick="login('form1','error_msg')">Login</button>
                     <a href="register.php" class="btn btn-success">Register</a>
-                </div>               
+                </div>   
+                <div id="error_msg" class="error_msg"></div>            
             </form>
         </div>
         <div class="card-footer text-center">

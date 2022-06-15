@@ -11,28 +11,7 @@ define('USER', 'root');
 define('PASS', '');
 define('DATABASE', 'reference_globe');
 
-function show_alert()
-{
-    if (!empty($_GET['msg'])) { ?>
-        <div class="alert alert-primary"><?php echo $_GET['msg']; ?></div>
-<?php
-    }
-}
-
-function set_selected($left, $right)
-{
-    if ($left == $right) {
-        echo "selected";
-    }
-}
-
-function invalid_action()
-{
-    echo "Invalid Activity";
-    exit;
-}
-
-
+require_once APP_PATH . 'php/helpers.php';
 require_once APP_PATH . 'php/DB.php';
 require_once APP_PATH . 'php/models/UserModel.php';
 require_once APP_PATH . 'php/models/EmployeeModel.php';

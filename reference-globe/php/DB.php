@@ -16,14 +16,8 @@ class DB
 
     public function insert($qry = '', $params = [])
     {
-        $statement = $this->conn->prepare('INSERT INTO testtable (name, lastname, age)
-        VALUES (:fname, :sname, :age)');
-        $params = [
-            'fname' => 'Bob',
-            'sname' => 'Desaunois',
-            'age' => '18',
-        ];
-        $statement->execute($params);
+        $stmt = $this->conn->prepare($qry);
+        return $stmt->execute($params);
     }
 
     public function select($qry = '', $params = [])
@@ -39,7 +33,7 @@ class DB
     }
 
     public function delete($qry = '', $params = [])
-    {       
+    {
         $stmt = $this->conn->prepare($qry);
         if (!empty($params)) {
             $stmt->execute($params);
@@ -50,8 +44,6 @@ class DB
 
     public function update($qry = '', $params = [])
     {
-        // echo $qry;
-        // debug($params);
         $stmt = $this->conn->prepare($qry);
         return $stmt->execute($params);
     }
@@ -80,5 +72,16 @@ class DB
                 return false;
             }
         }
+    }
+
+    public function checkUnique($table_name, $field_name, $field_value)
+    {
+        $sql = "SELECT * FROM $table_name where $field_name=:field_value";
+        $params = [
+            "field_value" => $field_value
+        ];
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute($params);
+        return $stmt->fetch(\PDO::FETCH_ASSOC);
     }
 }

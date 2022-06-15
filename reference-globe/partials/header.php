@@ -14,7 +14,4 @@ require_once APP_PATH . 'php/functions.php';
   <link href="<?PHP echo BASE_URL?>assets/style.css" rel="stylesheet">
 </head>
 
-<body>
-  <div class="text-center">
-    <h1>Reference Globe Assignment</h1>
-  </div>
+<body>  

@@ -79,7 +79,7 @@ if (!empty($_GET['action'])) {
                         <td><?php echo $user->getStatus(); ?></td>
                         <td><?php echo date('d/M/Y', strtotime($user->dob)); ?></td>
                         <td>
-                            <a href="<?php echo BASE_URL ?>app/user/user-manage.php?user_id=<?php echo $user->user_id; ?>" class="btn btn-sm btn-primary">Edit</a>
+                            <a href="<?php echo BASE_URL ?>app/user/user-edit.php?user_id=<?php echo $user->user_id; ?>" class="btn btn-sm btn-primary">Edit</a>
                             <a href="#" class="btn btn-sm btn-danger" onclick="userDelete('<?php echo $user->user_id ?>')">Delete</a>
                         </td>
                     </tr>

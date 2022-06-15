@@ -10,14 +10,6 @@ define('USER', 'root');
 define('PASS', '');
 define('DATABASE', 'reference_globe');
 
-require_once APP_PATH . 'php/DB.php';
-require_once APP_PATH . 'php/models/UserModel.php';
-require_once APP_PATH . 'php/models/EmployeeModel.php';
-
-$db_handler = new DB();
-$user_model = new UserModel($db_handler);
-$emp_model = new EmployeeModel($db_handler);
-
 function show_alert()
 {
     if (!empty($_GET['msg'])) { ?>
@@ -38,3 +30,12 @@ function invalid_action()
     echo "Invalid Activity";
     exit;
 }
+
+
+require_once APP_PATH . 'php/DB.php';
+require_once APP_PATH . 'php/models/UserModel.php';
+require_once APP_PATH . 'php/models/EmployeeModel.php';
+
+$db_handler = new DB();
+$user_model = new UserModel($db_handler);
+$emp_model = new EmployeeModel($db_handler);

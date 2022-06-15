@@ -14,7 +14,7 @@ if (empty($user->user_id)) {
     <h2>User Edit</h2>
     <div class="offset-md-4 col-md-4">
         <?php show_alert(); ?>
-        <form action="../../php/user_manage.php" method="post">
+        <form action="../../php/user_edit.php" method="post">
             <input type="hidden"  name="user_id" value="<?php echo $user->user_id; ?>">
             <div class="mb-3 mt-3">
                 <label for="email" class="form-label">Name:</label>

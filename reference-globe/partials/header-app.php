@@ -2,7 +2,7 @@
 require_once dirname(__FILE__, 2) . '/config.php';
 require_once APP_PATH . 'php/functions.php';
 if (empty($_SESSION['user']->user_id)) {
-  header('location:../index.php');
+  header('location:' . BASE_URL . 'index.php');
 }
 ?>
 <!DOCTYPE html>

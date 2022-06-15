@@ -3,7 +3,7 @@ require_once dirname(__FILE__, 2) . '/config.php';
 require_once 'functions.php';
 
 if (!empty($_POST)) {
-
+    
     $msg = "";
     $isExist = $db_handler->checkUnique('users', 'email', $_POST['email']);
     if (!$isExist) {

@@ -32,3 +32,4 @@ function set_selected($left, $right)
         echo "selected";
     }
 }
+

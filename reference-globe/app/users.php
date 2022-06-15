@@ -20,13 +20,35 @@ if (!empty($_GET['action'])) {
     <div class="table-responsive">
         <?php show_alert(); ?>
         <div class="search-bar">
-            <?php
-            if ($db_handler->hasAccess('add')) {
-            ?>
-                <a href="user_manage.php" class="btn btn-sm btn-success">+Add</a>
-            <?php
-            }
-            ?>
+            <form>
+                <table class="table table-brodered">
+                    <tr>
+                        <td>Name,Mobile,Email</td>
+                        <td>Action</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <?php
+                            $search_key = '';
+                            if (isset($_GET['search_key'])) {
+                                $search_key = $_GET['search_key'];
+                            };
+                            ?>
+                            <input class="form-control" type="text" name="search_key" value="<?php echo $search_key; ?>" />
+                        </td>
+                        <td>
+                            <input type="submit" name="search" value="Search" class="btn btn-sm btn-success">
+                            <?php if (isset($_GET['search'])) { ?>
+                                <a href="users.php" class="btn btn-sm btn-warning">Reset</a>
+                            <?php } ?>
+                            <?php if ($db_handler->hasAccess('add')) { ?>
+                                <a href="user_manage.php" class="btn btn-sm btn-primary">+Add</a>
+                            <?php } ?>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+
         </div>
         <table class="table table-bordered">
             <thead>
@@ -37,27 +59,28 @@ if (!empty($_GET['action'])) {
                     <th>Email</th>
                     <th>Gender</th>
                     <th>DOB</th>
+                    <th>STATUS</th>
                     <th>Action</th>
                 </tr>
             </thead>
             <tbody>
                 <?php
-                $sql = 'SELECT * FROM users';
-                $users = $db_handler->select($sql);
+                $users = $user_model->fetchAll();
                 $sn = 1;
                 foreach ($users as $row) {
-                    $row = (object)$row;
+                    $user = $user_model->setUser($row);
                 ?>
                     <tr>
                         <td><?php echo $sn; ?></td>
-                        <td><?php echo $row->name; ?></td>
-                        <td><?php echo $row->mobile; ?></td>
-                        <td><?php echo $row->email; ?></td>
-                        <td><?php echo $row->gender; ?></td>
-                        <td><?php echo date('d/M/Y', strtotime($row->dob)); ?></td>
+                        <td><?php echo $user->name; ?></td>
+                        <td><?php echo $user->mobile; ?></td>
+                        <td><?php echo $user->email; ?></td>
+                        <td><?php echo $user->gender; ?></td>
+                        <td><?php echo $user->getStatus(); ?></td>
+                        <td><?php echo date('d/M/Y', strtotime($user->dob)); ?></td>
                         <td>
                             <a href="#" class="btn btn-sm btn-primary">Edit</a>
-                            <a href="#" class="btn btn-sm btn-danger" onclick="userDelete('<?php echo $row->user_id ?>')">Delete</a>
+                            <a href="#" class="btn btn-sm btn-danger" onclick="userDelete('<?php echo $user->user_id ?>')">Delete</a>
                         </td>
                     </tr>
                 <?php

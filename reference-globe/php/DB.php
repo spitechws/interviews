@@ -20,7 +20,7 @@ class DB
         return $stmt->execute($params);
     }
 
-    public function select($qry = '', $params = [])
+    public function select($qry = '', $params = [], $is_debug = 0)
     {
         // select a particular user by id
         $stmt = $this->conn->prepare($qry);
@@ -28,6 +28,10 @@ class DB
             $stmt->execute($params);
         } else {
             $stmt->execute();
+        }
+        if ($is_debug) {
+            debug($params,0);
+            debug($stmt,0);
         }
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }

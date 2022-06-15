@@ -24,5 +24,5 @@ if (!empty($_POST)) {
         header('Location:../app/user/users.php?msg=User updated successfully');
     } 
 } else {
-    header('Location:../app/user/user-manage.php?msg=No data to process');
+    header('Location:../app/user/user-edit.php?msg=No data to process');
 }

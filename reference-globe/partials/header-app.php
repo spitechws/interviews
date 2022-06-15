@@ -30,7 +30,7 @@ if (empty($_SESSION['user']->user_id)) {
           if ($db_handler->hasAccess('view')) {
           ?>
             <li class="nav-item">
-              <a class="nav-link" href="users.php">Users</a>
+              <a class="nav-link" href="<?php echo BASE_URL ?>app/user/users.php">Users</a>
             </li>
           <?php } ?>
 

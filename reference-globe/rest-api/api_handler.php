@@ -82,7 +82,12 @@ function register()
 function get_users()
 {
     global $user_model;
-    $data = $user_model->fetchAll();
+    $sql = "SELECT user_id,name,mobile,email,gender,dob,status,role_id FROM users where 1 ";
+    $data = [
+        'is_error' => 0,
+        'message' => 'success',
+        'data' => $user_model->fetchAll($sql)
+    ];
     send_response($data);
 }
 

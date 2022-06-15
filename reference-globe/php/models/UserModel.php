@@ -60,7 +60,7 @@ class UserModel extends BaseModel
             'profile_pic' => $this->profile_pic,
             'signature' => $this->signature,
             'dob' => date('Y-m-d', strtotime($this->dob)),
-            'role_id' => !empty($this->role_id) ? $this->role_id : 1
+            'role_id' => !empty($this->role_id) ? $this->role_id : 3
         ];
         return $this->db->insert($sql, $params);
     }
@@ -104,9 +104,11 @@ class UserModel extends BaseModel
         return !empty($data[0]) ? (object)$data[0] : null;
     }
 
-    public function fetchAll()
+    public function fetchAll($sql="")
     {
-        $sql = "SELECT * FROM users where 1 ";
+        if(empty($sql)){
+            $sql = "SELECT * FROM users where 1 ";
+        }     
         $params = [];
         if (!empty($_GET['search'])) {
             if (!empty($_GET['search_key'])) {

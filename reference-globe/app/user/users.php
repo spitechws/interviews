@@ -50,7 +50,25 @@ if (!empty($_GET['action'])) {
             </form>
 
         </div>
+
+        <div id="table1_error"></div>
         <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Mobile</th>
+                    <th>Email</th>
+                    <th>Gender</th>
+                    <th>DOB</th>
+                    <th>STATUS</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="table1">
+            </tbody>
+        </table>
+        <table class="table table-bordered" style="display:none;">
             <thead>
                 <tr>
                     <th>#</th>
@@ -78,7 +96,7 @@ if (!empty($_GET['action'])) {
                         <td><?php echo $user->gender; ?></td>
                         <td><?php echo $user->getStatus(); ?></td>
                         <td><?php echo date('d/M/Y', strtotime($user->dob)); ?></td>
-                        <td>                            
+                        <td>
                             <a href="<?php echo BASE_URL ?>app/user/user-edit.php?user_id=<?php echo $user->user_id; ?>" class="btn btn-sm btn-primary">Edit</a>
                             <?php
                             if ($user->role_id > 1) { ?>
@@ -104,6 +122,53 @@ if (!empty($_GET['action'])) {
         if (response) {
             window.location = 'users.php?action=delete&user_id=' + user_id;
         }
+    }
+
+    load_users('table1');
+
+    function load_users(tableId) {
+        $.ajax({
+            url: API_BASE_URL + '?action=get_users',
+            type: 'GET',
+            success: function(response) {
+                if (response.is_error == 0) {
+                    populateTable(tableId, response.data)
+                } else {
+                    $("#" + tableId + "_error").text(response.message);
+                }
+            },
+            error: function(error) {
+                $("#" + response_container_id).text(error);
+            }
+        });
+    }
+
+
+    function populateTable(tableBodyId, jsonData) {
+        var tableHTML = "";
+        var count = 1;
+        for (var item in jsonData) {
+            row = jsonData[item];
+            var editURL = BASE_URL + 'app/user/user-edit.php?user_id=' +row.user_id;
+            tableHTML += "<tr>";
+            tableHTML += "<td>" + count + "</td>";
+            tableHTML += "<td>" + row.name + "</td>";
+            tableHTML += "<td>" + row.mobile + "</td>";
+            tableHTML += "<td>" + row.email + "</td>";
+            tableHTML += "<td>" + row.gender + "</td>";
+            tableHTML += "<td>" + row.dob + "</td>";
+            tableHTML += "<td>" + row.status + "</td>";
+            tableHTML += "<td>";
+            tableHTML += '<a class="btn btn-sm btn-primary" href="' + editURL + '">Edit</a>';
+            if (row.role_id > 1) {
+                tableHTML += '&nbsp;<a class="btn btn-sm btn-danger" onclick="userDelete(' + row.user_id + ')">Delete</a>';
+            }
+            tableHTML += "</td>";
+            tableHTML += "</tr>";
+            count++;
+        }
+
+        document.getElementById(tableBodyId).innerHTML = tableHTML;
     }
 </script>
 <?php

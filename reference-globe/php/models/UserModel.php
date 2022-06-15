@@ -110,8 +110,8 @@ class UserModel extends BaseModel
         $params = [];
         if (!empty($_GET['search'])) {
             if (!empty($_GET['search_key'])) {
-                $sql .= "and `name` like :name ";
-                $params['name'] = '%' . $_GET['search_key'] . '%';
+                $sql .= "and (`name` like :search_key or `mobile` like :search_key or email like :search_key)";
+                $params['search_key'] = '%' . $_GET['search_key'] . '%';
             }
         }
         return $this->db->select($sql, $params);

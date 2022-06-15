@@ -1,8 +1,4 @@
 <?php
-// required headers
-header("Access-Control-Allow-Origin: *");
-header("Content-Type: application/json; charset=UTF-8");
-
 // include database and object files
 include_once '../config.php';
 
@@ -10,7 +6,7 @@ function login()
 {
     global $user_model;
     $data = [
-        'is_error' => 1,
+        'is_error' => true,
         'message' => 'success'
     ];
     if (!empty($_POST)) {
@@ -21,14 +17,14 @@ function login()
         ];
         $user = $user_model->fetch($sql, $params);
         if (!empty($user)) {
-            $_SESSION['user'] = (object)$user[0]; 
-            $data['is_error']=0;   
-            $data['message']='Login successfully';        
-        } else {         
-            $data['message']='Invalid login details'; 
+            $_SESSION['user'] = (object)$user[0];
+            $data['is_error'] = false;
+            $data['message'] = 'Login successfully';
+        } else {
+            $data['message'] = 'Invalid login details';
         }
-    } else {       
-        $data['message']='Dats is required'; 
+    } else {
+        $data['message'] = 'Data is required';
     }
     send_response($data);
 }
@@ -46,19 +42,12 @@ function error_handler($error_no, $error)
         'error_no' => $error_no,
         'error' => $error,
     ];
-    send_response($data, 500, 'error');
+    send_response($data);
 }
 
 
-function send_response($data, $status = 200, $message = 'success')
-{
-    $response = [
-        'status' => $status,
-        'message' => $message
-    ];
-    if (!empty($data)) {
-        $response['data'] = $data;
-    }
-    http_response_code($status);
-    echo json_encode($response);
+function send_response($data)
+{    
+    http_response_code(200);
+    echo json_encode($data);
 }

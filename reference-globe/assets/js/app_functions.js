@@ -6,10 +6,10 @@ function login(form_id, response_container_id) {
         data: formData,
         success: function (response) {
             // $("#" + response_container_id).text(JSON.stringify(response.data));
-            if (response.data.is_error==0) {
+            if (response.is_error==0) {
                 window.location.href = BASE_URL + 'app/dashboard.php';              
             } else {
-                $("#" + response_container_id).text(response.data.message);
+                $("#" + response_container_id).text(response.message);
             }
         },
         error: function (xhr, status, error) {

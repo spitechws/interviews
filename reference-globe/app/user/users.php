@@ -78,9 +78,14 @@ if (!empty($_GET['action'])) {
                         <td><?php echo $user->gender; ?></td>
                         <td><?php echo $user->getStatus(); ?></td>
                         <td><?php echo date('d/M/Y', strtotime($user->dob)); ?></td>
-                        <td>
+                        <td>                            
                             <a href="<?php echo BASE_URL ?>app/user/user-edit.php?user_id=<?php echo $user->user_id; ?>" class="btn btn-sm btn-primary">Edit</a>
-                            <a href="#" class="btn btn-sm btn-danger" onclick="userDelete('<?php echo $user->user_id ?>')">Delete</a>
+                            <?php
+                            if ($user->role_id > 1) { ?>
+                                <a href="#" class="btn btn-sm btn-danger" onclick="userDelete('<?php echo $user->user_id ?>')">Delete</a>
+                            <?php
+                            }
+                            ?>
                         </td>
                     </tr>
                 <?php

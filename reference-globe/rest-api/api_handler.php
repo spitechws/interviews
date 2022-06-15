@@ -1,6 +1,7 @@
 <?php
 // include database and object files
 include_once '../config.php';
+include_once 'validation.php';
 
 function login()
 {
@@ -17,9 +18,14 @@ function login()
         ];
         $user = $user_model->fetch($sql, $params);
         if (!empty($user)) {
-            $_SESSION['user'] = (object)$user[0];
-            $data['is_error'] = 0;
-            $data['message'] = 'Login successfully';
+            $user = (object)$user[0];
+            if ($user->status == '1') {
+                $_SESSION['user'] = $user;
+                $data['is_error'] = 0;
+                $data['message'] = 'Login successfully';
+            } else {
+                $data['message'] = 'Your account is waiting for admin approval';
+            }
         } else {
             $data['message'] = 'Invalid login details';
         }
@@ -36,6 +42,15 @@ function register()
         'is_error' => 1,
         'message' => 'error'
     ];
+    if (!is_valid_mobile($_POST['mobile'])) {
+        $data['message'] = "Invalid mobile number format";
+        send_response($data);
+    }
+    if (!is_valid_email($_POST['email'])) {
+        $data['message'] = "Invalid email id format";
+        send_response($data);
+    }
+
     $isExist = $db_handler->checkUnique('users', 'email', $_POST['email']);
     if (!$isExist) {
         $isExist = $db_handler->checkUnique('users', 'email', $_POST['email']);
@@ -85,4 +100,5 @@ function send_response($data)
 {
     http_response_code(200);
     echo json_encode($data);
+    exit;
 }

@@ -24,7 +24,7 @@ $gender = '';
                 </div>
                 <div class="mb-3 mt-3">
                     <label for="email" class="form-label">Mobile:</label>
-                    <input type="text" class="form-control" id="mobile" name="mobile" value="<?php echo $mobile; ?>">
+                    <input type="text" class="form-control" maxlength="10" id="mobile" name="mobile" value="<?php echo $mobile; ?>">
                 </div>
                 <div class="mb-3 mt-3">
                     <label for="email" class="form-label">Email:</label>

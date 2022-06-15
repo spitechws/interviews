@@ -68,7 +68,7 @@ class UserModel extends BaseModel
     public function update()
     {
         $sql = 'UPDATE users SET `name`=:name, `mobile`=:mobile, `email`=:email, `address`=:address, `gender`=:gender, 
-        `dob`=:dob,`profile_pic`=:profile_pic,`signature`=:signature  WHERE `user_id`=:user_id';
+        `dob`=:dob,`profile_pic`=:profile_pic,`signature`=:signature,`status`=:status  WHERE `user_id`=:user_id';
         $params = [
             'email' => $this->email,
             'name' => $this->name,
@@ -78,8 +78,9 @@ class UserModel extends BaseModel
             'profile_pic' => $this->profile_pic,
             'signature' => $this->signature,
             'dob' => date('Y-m-d', strtotime($this->dob)),
-            'user_id' => $this->user_id
-        ];
+            'user_id' => $this->user_id,
+            'status' => $this->status
+        ];     
         return $this->db->update($sql, $params);
     }
 

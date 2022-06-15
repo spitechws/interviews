@@ -9,6 +9,7 @@ if (!empty($_POST)) {
     $user_model->email = $_POST['email'];
     $user_model->gender = $_POST['gender'];
     $user_model->address = $_POST['address'];
+    $user_model->status = $_POST['status'];
     $user_model->dob = $_POST['dob'];
     $user_model->profile_pic = '';
     $user_model->signature = '';
@@ -23,5 +24,5 @@ if (!empty($_POST)) {
         header('Location:../app/user/users.php?msg=User updated successfully');
     } 
 } else {
-    header('Location:../app/user-manage.php?msg=No data to process');
+    header('Location:../app/user/user-manage.php?msg=No data to process');
 }

@@ -45,6 +45,13 @@ $selected_gender = "Male";
                 <label for="email" class="form-label">Address:</label>
                 <textarea class="form-control" id="address" name="address"><?php echo $user->address; ?></textarea>
             </div>
+            <div class="mb-3 mt-3">
+                <label for="email" class="form-label">Status:</label>
+                <select class="form-control" id="status" name="status">
+                    <option value="1" <?php set_selected('1', $user->status); ?>>Active</option>
+                    <option value="0" <?php set_selected('0', $user->status); ?>>Inactive</option>
+                </select>
+            </div>
             <div class=" form-group text-center">
                 <button type="submit" class="btn btn-success">Update</button>
             </div>

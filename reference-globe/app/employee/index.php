@@ -32,7 +32,7 @@ if (!empty($_GET['action'])) {
                         <input type="button"  value="Search" onclick="search_users()" class="btn btn-sm btn-success">
                         <input type="button"  value="Reset" onclick="reset()" class="btn btn-sm btn-warning">
                         <?php if ($db_handler->hasAccess('add')) { ?>
-                            <a href="<?php echo BASE_URL ?>app/user/user-add.php" class="btn btn-sm btn-primary">+Add</a>
+                            <a href="<?php echo BASE_URL ?>app/employee/add.php" class="btn btn-sm btn-primary">+Add</a>
                         <?php } ?>
                     </td>
                 </tr>

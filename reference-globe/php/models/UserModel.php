@@ -95,6 +95,14 @@ class UserModel extends BaseModel
         return $this->db->select($sql, $params);
     }
 
+    public function fetchByPk()
+    {
+        $sql = "SELECT * FROM users WHERE user_id=:user_id";
+        $params = ['user_id' => $this->user_id];
+        $data = $this->db->select($sql, $params);
+        return !empty($data[0]) ? (object)$data[0] : null;
+    }
+
     public function fetchAll()
     {
         $sql = "SELECT * FROM users where 1 ";
@@ -102,7 +110,7 @@ class UserModel extends BaseModel
         if (!empty($_GET['search'])) {
             if (!empty($_GET['search_key'])) {
                 $sql .= "and `name` like :name ";
-                $params['name'] = '%'.$_GET['search_key'].'%';
+                $params['name'] = '%' . $_GET['search_key'] . '%';
             }
         }
         return $this->db->select($sql, $params);

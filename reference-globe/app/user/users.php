@@ -1,5 +1,5 @@
 <?php
-require_once  dirname(__FILE__, 2) . '/partials/header-app.php';
+require_once  dirname(__FILE__, 3) . '/partials/header-app.php';
 if (!$db_handler->hasAccess('view')) {
     header('Location:dashboard.php?msg=User Access Denied');
 }
@@ -79,7 +79,7 @@ if (!empty($_GET['action'])) {
                         <td><?php echo $user->getStatus(); ?></td>
                         <td><?php echo date('d/M/Y', strtotime($user->dob)); ?></td>
                         <td>
-                            <a href="#" class="btn btn-sm btn-primary">Edit</a>
+                            <a href="user-manage.php?user_id=<?php echo $user->user_id;?>" class="btn btn-sm btn-primary">Edit</a>
                             <a href="#" class="btn btn-sm btn-danger" onclick="userDelete('<?php echo $user->user_id ?>')">Delete</a>
                         </td>
                     </tr>
@@ -102,5 +102,5 @@ if (!empty($_GET['action'])) {
     }
 </script>
 <?php
-require_once  dirname(__FILE__, 2) . '/partials/footer.php';
+require_once  dirname(__FILE__, 3) . '/partials/footer.php';
 ?>

@@ -3,7 +3,7 @@ require_once dirname(__FILE__, 2) . '/config.php';
 require_once 'functions.php';
 
 if (!empty($_POST)) {
-    $user_model->user_id = $_SESSION['user']->user_id;
+    $user_model->user_id = $_POST['user_id'];
     $user_model->name = $_POST['name'];
     $user_model->mobile = $_POST['mobile'];
     $user_model->email = $_POST['email'];
@@ -20,8 +20,8 @@ if (!empty($_POST)) {
         ];
         $user = $db_handler->select($sql, $params);
         $_SESSION['user'] = (object)$user[0];
-        header('Location:../app/user-update.php?msg=Profiile updated successfully');
-    }
+        header('Location:../app/user/users.php?msg=User updated successfully');
+    } 
 } else {
     header('Location:../app/user-manage.php?msg=No data to process');
 }

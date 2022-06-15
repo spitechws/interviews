@@ -33,3 +33,8 @@ function set_selected($left, $right)
     }
 }
 
+function invalid_action()
+{
+    echo "Invalid Activity";
+    exit;
+}

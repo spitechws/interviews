@@ -1,5 +1,5 @@
 <?php
-require_once  dirname(__FILE__, 2) . '/partials/header-app.php';
+require_once  dirname(__FILE__, 3) . '/partials/header-app.php';
 
 if (!empty($_GET['action'])) {
     $action = $_GET['action'];
@@ -58,5 +58,5 @@ if (!empty($_GET['action'])) {
 </div>
 
 <?php
-require_once  dirname(__FILE__, 2) . '/partials/footer.php';
+require_once  dirname(__FILE__, 3) . '/partials/footer.php';
 ?>

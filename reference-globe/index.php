@@ -4,12 +4,7 @@ require_once 'partials/header.php';
 
 <div class="container">
     <div class="offset-md-4 col-md-4">
-        <?php
-        if (!empty($_GET['msg'])) { ?>
-            <div class="alert alert-warning"><?php echo $_GET['msg'];?></div>
-        <?php
-        }
-        ?>
+        <?php show_alert(); ?>
         <form action="php/login_check.php" method="post">
             <div class="mb-3 mt-3">
                 <label for="email" class="form-label">Email:</label>

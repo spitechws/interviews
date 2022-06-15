@@ -5,32 +5,34 @@ function login(form_id, response_container_id) {
         type: 'POST',
         data: formData,
         success: function (response) {
-            // $("#" + response_container_id).text(JSON.stringify(response.data));
-            if (response.is_error==0) {
-                window.location.href = BASE_URL + 'app/dashboard.php';              
+            if (response.is_error == 0) {
+                window.location.href = BASE_URL + 'app/dashboard.php';
             } else {
                 $("#" + response_container_id).text(response.message);
             }
         },
-        error: function (xhr, status, error) {
+        error: function (error) {
             $("#" + response_container_id).text(error);
         }
     });
 }
 
-
-function get_users(response_container_id) {
-    var valueOfTextBox = $("#result").val();
-    var valueOfSelectedCheckbox = $("#radio:checked").val();
-
+function register(form_id, response_container_id) {
+    var form = $('#' + form_id);
+    var formData = form.serializeArray();
     $.ajax({
-        url: API_BASE_URL + '?action=get_users',
-        type: 'GET',
+        url: API_BASE_URL + '?action=register',
+        type: 'POST',
+        data: formData,
         success: function (response) {
-            $("#" + response_container_id).text(JSON.stringify(response.data));
+            $("#" + response_container_id).text(response.message);
+            if (response.is_error == 0) {
+                form[0].reset();
+            }
         },
-        error: function (xhr, status, error) {
+        error: function (error) {
             $("#" + response_container_id).text(error);
         }
     });
 }
+

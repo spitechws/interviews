@@ -16,7 +16,8 @@ $gender = '';
             Register
         </div>
         <div class="card-body">
-            <form action="php/user_register.php" method="post">
+            <form id="form1">
+                <div id="error_msg" class="error_msg"></div>
                 <div class="mb-3 mt-3">
                     <label for="email" class="form-label">Name:</label>
                     <input type="text" class="form-control" id="name" name="name" value="<?php echo $name; ?>">
@@ -50,7 +51,7 @@ $gender = '';
                     <textarea class="form-control" id="address" name="address"><?php echo $address; ?></textarea>
                 </div>
                 <div class=" form-group text-center">
-                    <button type="submit" class="btn btn-success">Create New Account</button>
+                    <button type="button" class="btn btn-success" onclick="register('form1','error_msg')">Create New Account</button>
                 </div>
             </form>
         </div>

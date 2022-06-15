@@ -4,6 +4,8 @@ require_once 'BaseModel.php';
 class UserModel extends BaseModel
 {
     private $db;
+    private $tbl_name;
+
     public $user_id;
     public $name;
     public $mobile;
@@ -20,26 +22,9 @@ class UserModel extends BaseModel
     function __construct($db_handler)
     {
         $this->db = $db_handler;
+        $this->tbl_name = 'users';
     }
-
-    public function setUser($object)
-    {
-        if (is_array($object)) {
-            $object = (object)$object;
-        }
-        $this->user_id = $object->user_id;
-        $this->name = $object->name;
-        $this->mobile = $object->mobile;
-        $this->email = $object->email;
-        $this->dob = $object->dob;
-        $this->address = $object->address;
-        $this->profile_pic = $object->profile_pic;
-        $this->signature = $object->signature;
-        $this->gender = $object->gender;
-        $this->role_id = $object->role_id;
-        $this->status = $object->status;
-        return $this;
-    }
+   
 
     public function getStatus()
     {
@@ -67,7 +52,7 @@ class UserModel extends BaseModel
 
     public function update()
     {
-        $sql = 'UPDATE users SET `name`=:name, `mobile`=:mobile, `email`=:email, `address`=:address, `gender`=:gender, 
+        $sql = 'UPDATE '.$this->tbl_name.' SET `name`=:name, `mobile`=:mobile, `email`=:email, `address`=:address, `gender`=:gender, 
         `dob`=:dob,`profile_pic`=:profile_pic,`signature`=:signature,`status`=:status  WHERE `user_id`=:user_id';
         $params = [
             'email' => $this->email,
@@ -80,13 +65,13 @@ class UserModel extends BaseModel
             'dob' => date('Y-m-d', strtotime($this->dob)),
             'user_id' => $this->user_id,
             'status' => $this->status
-        ];     
+        ];
         return $this->db->update($sql, $params);
     }
 
     public function delete()
     {
-        $sql = "DELETE FROM users WHERE user_id=:user_id";
+        $sql = "DELETE FROM $this->tbl_name WHERE user_id=:user_id";
         $params = ['user_id' => $this->user_id];
         return $this->db->delete($sql, $params);
     }
@@ -94,21 +79,19 @@ class UserModel extends BaseModel
     public function fetch($sql, $params)
     {
         return $this->db->select($sql, $params);
-    }   
+    }
 
     public function fetchByPk()
     {
-        $sql = "SELECT * FROM users WHERE user_id=:user_id";
+        $sql = "SELECT * FROM $this->tbl_name WHERE user_id=:user_id";
         $params = ['user_id' => $this->user_id];
         $data = $this->db->select($sql, $params);
         return !empty($data[0]) ? (object)$data[0] : null;
     }
 
-    public function fetchAll($sql="")
+    public function fetchAll()
     {
-        if(empty($sql)){
-            $sql = "SELECT * FROM users where 1 ";
-        }     
+        $sql = "SELECT t1.*,t2.role_name FROM $this->tbl_name as t1 LEFT JOIN roles as t2 on t1.role_id=t2.role_id where 1 ";
         $params = [];
         if (!empty($_GET['search_key'])) {
             $sql .= "and (`name` like :search_key or `mobile` like :search_key or email like :search_key)";

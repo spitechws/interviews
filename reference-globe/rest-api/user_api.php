@@ -1,7 +1,6 @@
 <?php
 // include database and object files
 include_once '../config.php';
-include_once 'validation.php';
 
 function login()
 {
@@ -79,31 +78,14 @@ function register()
 }
 
 
-function get_users()
+function user_list()
 {
-    global $user_model;
-    $sql = "SELECT user_id,name,mobile,email,gender,dob,status,role_id FROM users where 1 ";    
+    global $user_model;   
     $data = [
         'is_error' => 0,
         'message' => 'success',
-        'data' => $user_model->fetchAll($sql)
+        'data' => $user_model->fetchAll()
     ];
     send_response($data);
 }
 
-function error_handler($error_no, $error)
-{
-    $data = [
-        'error_no' => $error_no,
-        'error' => $error,
-    ];
-    send_response($data);
-}
-
-
-function send_response($data)
-{
-    http_response_code(200);
-    echo json_encode($data);
-    exit;
-}

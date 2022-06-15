@@ -4,47 +4,46 @@ require_once 'BaseModel.php';
 class EmployeeModel extends BaseModel
 {
     private $db;
-    public $user_id;
+    private $tbl_name;
+
+    public $emp_id;
     public $name;
-    public $mobiile;
+    public $mobile;
     public $email;
-    public $password;
+    public $doj;
     public $dob;
     public $address;
-    public $profile_pic;
-    public $signature;
-    public $gender;
-    public $role_id;
+    public $blood_group;
+    public $designation;
 
     function __construct($db_handler)
     {
         $this->db = $db_handler;
+        $this->tbl_name = 'employee';
     }
 
     public function add()
     {
-        $sql = "INSERT INTO users(`name`,`mobile`,`email`,`address`,`gender`,`dob`,`password`,`profile_pic`,`signature`,`role_id`)";
-        $sql .= " VALUES(:name,:mobile,:email,:address,:gender,:dob,:password,:profile_pic,:signature,:role_id)";
+        $sql = "INSERT INTO users(`name`,`mobile`,`email`,`address`,`designation`,`dob`,`doj`,`blood_group`)";
+        $sql .= " VALUES(:name,:mobile,:email,:address,:designation,:dob,:doj,:blood_group,:signature,:role_id)";
         $params = [
-            'password' => md5($this->password),
             'email' => $this->email,
             'name' => $this->name,
             'mobile' => $this->mobile,
+            'designation' => $this->designation,
             'address' => $this->address,
-            'gender' => $this->gender,
-            'profile_pic' => $this->profile_pic,
-            'signature' => $this->signature,
+            'blood_group' => $this->blood_group,
             'dob' => date('Y-m-d', strtotime($this->dob)),
-            'role_id' => !empty($this->role_id) ? $this->role_id : 1
+            'doj' => date('Y-m-d', strtotime($this->doj))
         ];
         return $this->db->insert($sql, $params);
     }
 
     public function update()
     {
-        $sql = 'UPDATE users SET `name`=:name, `mobile`=:mobile, `email`=:email, `address`=:address, `gender`=:gender, 
-        `dob`=:dob,`profile_pic`=:profile_pic,`signature`=:signature  WHERE `user_id`=:user_id';
-        $params = [         
+        $sql = 'UPDATE ' . $this->tbl_name . ' SET `name`=:name, `mobile`=:mobile, `email`=:email, `address`=:address, `gender`=:gender, 
+        `dob`=:dob,`profile_pic`=:profile_pic,`signature`=:signature,`status`=:status  WHERE `emp_id`=:emp_id';
+        $params = [
             'email' => $this->email,
             'name' => $this->name,
             'mobile' => $this->mobile,
@@ -53,27 +52,40 @@ class EmployeeModel extends BaseModel
             'profile_pic' => $this->profile_pic,
             'signature' => $this->signature,
             'dob' => date('Y-m-d', strtotime($this->dob)),
-            'user_id' => $this->user_id           
+            'emp_id' => $this->emp_id,
+            'status' => $this->status
         ];
         return $this->db->update($sql, $params);
-    }   
+    }
 
     public function delete()
     {
-        $sql = "DELETE FROM users WHERE user_id=:user_id";
-        $params = ['user_id' => $this->user_id];
-        return $this->db->delete($sql,$params);
+        $sql = "DELETE FROM $this->tbl_name WHERE emp_id=:emp_id";
+        $params = ['emp_id' => $this->emp_id];
+        return $this->db->delete($sql, $params);
     }
 
-    public function fetch($sql,$params)
-    {       
-        return $this->db->select($sql,$params);
+    public function fetch($sql, $params)
+    {
+        return $this->db->select($sql, $params);
+    }
+
+    public function fetchByPk()
+    {
+        $sql = "SELECT * FROM $this->tbl_name WHERE emp_id=:emp_id";
+        $params = ['emp_id' => $this->emp_id];
+        $data = $this->db->select($sql, $params);
+        return !empty($data[0]) ? (object)$data[0] : null;
     }
 
     public function fetchAll()
     {
-        $sql = "SELECT * FROM users";
-        return $this->db->select($sql);
+        $sql = "SELECT * FROM $this->tbl_name";
+        $params = [];
+        if (!empty($_GET['search_key'])) {
+            $sql .= "and (`name` like :search_key or `mobile` like :search_key or email like :search_key)";
+            $params['search_key'] = '%' . $_GET['search_key'] . '%';
+        }
+        return $this->db->select($sql, $params);
     }
-
 }

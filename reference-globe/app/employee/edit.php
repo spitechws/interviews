@@ -1,12 +1,12 @@
 <?php
 require_once  dirname(__FILE__, 3) . '/partials/header-app.php';
 
-if (empty($_GET['user_id'])) {
+if (empty($_GET['emp_id'])) {
     invalid_action();
 }
-$user_model->user_id = $_GET['user_id'];
-$user = $user_model->fetchByPk();
-if (empty($user->user_id)) {
+$emp_model->emp_id = $_GET['emp_id'];
+$user = $emp_model->fetchByPk();
+if (empty($user->emp_id)) {
     invalid_action();
 }
 ?>
@@ -15,7 +15,7 @@ if (empty($user->user_id)) {
     <div class="offset-md-4 col-md-4">
         <?php show_alert(); ?>
         <form action="../../php/user_edit.php" method="post">
-            <input type="hidden"  name="user_id" value="<?php echo $user->user_id; ?>">
+            <input type="hidden"  name="emp_id" value="<?php echo $user->emp_id; ?>">
             <div class="mb-3 mt-3">
                 <label for="email" class="form-label">Name:</label>
                 <input type="text" class="form-control" id="name" name="name" value="<?php echo $user->name; ?>">

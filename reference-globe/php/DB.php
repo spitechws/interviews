@@ -36,13 +36,17 @@ class DB
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
-    public function delete($qry = '', $params = [])
+    public function delete($qry = '', $params = [], $is_debug = 0)
     {
         $stmt = $this->conn->prepare($qry);
         if (!empty($params)) {
             $stmt->execute($params);
         } else {
             $stmt->execute();
+        }
+        if ($is_debug) {
+            debug($params,0);
+            debug($stmt,1);
         }
     }
 

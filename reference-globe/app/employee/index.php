@@ -1,16 +1,15 @@
 <?php
 require_once  dirname(__FILE__, 3) . '/partials/header-app.php';
 if (!$db_handler->hasAccess('view')) {
-    header('Location:dashboard.php?msg=User Access Denied');
+    header('Location:'.BASE_URL.'app/dashboard.php?msg=User Access Denied');
 }
 if (!empty($_GET['action'])) {
     $action = $_GET['action'];
-    if ($action == 'delete') {
-        //delete the user
-        if (!empty($_GET['user_id'])) {
-            $sql = 'DELETE FROM users where user_id=:user_id';
-            $res = $db_handler->delete($sql, ['user_id' => $_GET['user_id']]);
-            header('Location:users.php?msg=User Deleted Succcessfully');
+    if ($action == 'delete') {       
+        if (!empty($_GET['delete_id'])) {
+            $emp_model->emp_id=$_GET['delete_id'];
+            $emp_model->delete();
+            header('Location:'.BASE_URL.'app/employee/index.php?msg=Employee Deleted Succcessfully');
         }
     }
 }
@@ -61,10 +60,10 @@ if (!empty($_GET['action'])) {
 </div>
 
 <script type="text/javascript">
-    function userDelete(user_id) {
-        var response = confirm('Are you sure want to delete this user?');
+    function deleteRecord(delete_id) {
+        var response = confirm('Are you sure want to delete this record?');
         if (response) {
-            window.location = 'users.php?action=delete&user_id=' + user_id;
+            window.location = BASE_URL+'app/employee/index.php?action=delete&delete_id=' + delete_id;
         }
     }
 
@@ -72,7 +71,7 @@ if (!empty($_GET['action'])) {
 
     function load_users(tableId) {
         $.ajax({
-            url: API_BASE_URL + '?action=get_users',
+            url: API_BASE_URL + '?action=employee_list',
             type: 'GET',
             success: function(response) {
                 if (response.is_error == 0) {
@@ -96,7 +95,7 @@ if (!empty($_GET['action'])) {
         var tableId = 'table1';
         var search_key = $('#search_key').val();
         $.ajax({
-            url: API_BASE_URL + '?action=get_users&search_key=' + search_key,
+            url: API_BASE_URL + '?action=employee_list&search_key=' + search_key,
             type: 'GET',
             success: function(response) {
                 if (response.is_error == 0) {
@@ -118,7 +117,7 @@ if (!empty($_GET['action'])) {
         var count = 1;
         for (var item in jsonData) {
             row = jsonData[item];
-            var editURL = BASE_URL + 'app/user/user-edit.php?user_id=' + row.user_id;
+            var editURL = BASE_URL + 'app/employee/edit.php?user_id=' + row.user_id;
             tableHTML += "<tr>";
             tableHTML += "<td>" + count + "</td>";
             tableHTML += "<td>" + row.name + "</td>";
@@ -130,7 +129,7 @@ if (!empty($_GET['action'])) {
             tableHTML += "<td>";
             tableHTML += '<a class="btn btn-sm btn-primary" href="' + editURL + '">Edit</a>';
             if (row.role_id > 1) {
-                tableHTML += '&nbsp;<a class="btn btn-sm btn-danger" onclick="userDelete(' + row.user_id + ')">Delete</a>';
+                tableHTML += '&nbsp;<a class="btn btn-sm btn-danger" onclick="deleteRecord(' + row.user_id + ')">Delete</a>';
             }
             tableHTML += "</td>";
             tableHTML += "</tr>";

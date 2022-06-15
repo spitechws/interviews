@@ -1,16 +1,16 @@
 <?php
 require_once  dirname(__FILE__, 3) . '/partials/header-app.php';
 if (!$db_handler->hasAccess('view')) {
-    header('Location:dashboard.php?msg=User Access Denied');
+    header('Location:'.BASE_URL.'app/dashboard.php?msg=User Access Denied');
 }
 if (!empty($_GET['action'])) {
     $action = $_GET['action'];
     if ($action == 'delete') {
         //delete the user
-        if (!empty($_GET['user_id'])) {
-            $sql = 'DELETE FROM users where user_id=:user_id';
-            $res = $db_handler->delete($sql, ['user_id' => $_GET['user_id']]);
-            header('Location:users.php?msg=User Deleted Succcessfully');
+        if (!empty($_GET['delete_id'])) {           
+            $user_model->user_id=$_GET['delete_id'];
+            $user_model->delete();
+            header('Location:'.BASE_URL.'app/user/index.php?msg=User Deleted Succcessfully');
         }
     }
 }
@@ -30,8 +30,8 @@ if (!empty($_GET['action'])) {
                         <input class="form-control" type="text" id="search_key" name="search_key" />
                     </td>
                     <td>
-                        <input type="button"  value="Search" onclick="search_users()" class="btn btn-sm btn-success">
-                        <input type="button"  value="Reset" onclick="reset()" class="btn btn-sm btn-warning">
+                        <input type="button" value="Search" onclick="search_users()" class="btn btn-sm btn-success">
+                        <input type="button" value="Reset" onclick="reset()" class="btn btn-sm btn-warning">
                         <?php if ($db_handler->hasAccess('add')) { ?>
                             <a href="<?php echo BASE_URL ?>app/user/user-add.php" class="btn btn-sm btn-primary">+Add</a>
                         <?php } ?>
@@ -61,10 +61,11 @@ if (!empty($_GET['action'])) {
 </div>
 
 <script type="text/javascript">
-    function userDelete(user_id) {
-        var response = confirm('Are you sure want to delete this user?');
+
+    function deleteRecord(delete_id) {
+        var response = confirm('Are you sure want to delete this record?');
         if (response) {
-            window.location = 'users.php?action=delete&user_id=' + user_id;
+            window.location = BASE_URL + 'app/user/index.php?action=delete&delete_id=' + delete_id;
         }
     }
 
@@ -72,7 +73,7 @@ if (!empty($_GET['action'])) {
 
     function load_users(tableId) {
         $.ajax({
-            url: API_BASE_URL + '?action=get_users',
+            url: API_BASE_URL + '?action=user_list',
             type: 'GET',
             success: function(response) {
                 if (response.is_error == 0) {
@@ -87,7 +88,7 @@ if (!empty($_GET['action'])) {
         });
     }
 
-    function reset(){
+    function reset() {
         $('#search_key').val('');
         load_users('table1');
     }
@@ -96,7 +97,7 @@ if (!empty($_GET['action'])) {
         var tableId = 'table1';
         var search_key = $('#search_key').val();
         $.ajax({
-            url: API_BASE_URL + '?action=get_users&search_key=' + search_key,
+            url: API_BASE_URL + '?action=user_list&search_key=' + search_key,
             type: 'GET',
             success: function(response) {
                 if (response.is_error == 0) {

@@ -6,7 +6,6 @@ if (empty($_SESSION['user']->user_id)) {
 ?>
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <title>Reference Globe</title>
   <meta charset="utf-8">
@@ -32,10 +31,18 @@ if (empty($_SESSION['user']->user_id)) {
       <div class="collapse navbar-collapse" id="collapsibleNavbar">
         <ul class="navbar-nav">
           <?php
-          if ($db_handler->hasAccess('view')) {
+          if ($db_handler->hasAccess('user', 'view')) {
           ?>
             <li class="nav-item">
-              <a class="nav-link" href="<?php echo BASE_URL ?>app/user/users.php">Users</a>
+              <a class="nav-link" href="<?php echo BASE_URL ?>app/user/">Users</a>
+            </li>
+          <?php } ?>
+
+          <?php
+          if ($db_handler->hasAccess('employee', 'view')) {
+          ?>
+            <li class="nav-item">
+              <a class="nav-link" href="<?php echo BASE_URL ?>app/employee/">Employee</a>
             </li>
           <?php } ?>
 
@@ -43,7 +50,7 @@ if (empty($_SESSION['user']->user_id)) {
           if ($_SESSION['user']->role_id == 3) {
           ?>
             <li class="nav-item">
-              <a class="nav-link" href="<?php echo BASE_URL ?>app/user/user-update.php">Update Profile</a>
+              <a class="nav-link" href="<?php echo BASE_URL ?>app/user/update.php">Update Profile</a>
             </li>
           <?php } ?>
           <li class="nav-item">

@@ -6,8 +6,12 @@
     margin-top: 20px;
 }
 
-.error_msg {
+.required {
+    padding-left: 10px;
     color: red;
-    text-align: center;
-    margin-top:20px;
+}
+
+.profile-pic {
+    height: 50px;
+    width: 50px;
 }

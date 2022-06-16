@@ -24,7 +24,7 @@ class UserModel extends BaseModel
         $this->db = $db_handler;
         $this->tbl_name = 'users';
     }
-   
+
 
     public function getStatus()
     {
@@ -52,7 +52,7 @@ class UserModel extends BaseModel
 
     public function update()
     {
-        $sql = 'UPDATE '.$this->tbl_name.' SET `name`=:name, `mobile`=:mobile, `email`=:email, `address`=:address, `gender`=:gender, 
+        $sql = 'UPDATE ' . $this->tbl_name . ' SET `name`=:name, `mobile`=:mobile, `email`=:email, `address`=:address, `gender`=:gender, 
         `dob`=:dob,`profile_pic`=:profile_pic,`signature`=:signature,`status`=:status  WHERE `user_id`=:user_id';
         $params = [
             'email' => $this->email,
@@ -66,6 +66,17 @@ class UserModel extends BaseModel
             'user_id' => $this->user_id,
             'status' => $this->status
         ];
+
+        //----removing old files
+        $user = $this->fetchByPk();
+        $signature = UPLOAD_PATH . $user->signature;
+        if(file_exists($signature)){
+            unlink($signature);
+        }
+        $profile_pic = UPLOAD_PATH . $user->profile_pic;
+        if(file_exists($profile_pic)){
+            unlink($profile_pic);
+        }
         return $this->db->update($sql, $params);
     }
 

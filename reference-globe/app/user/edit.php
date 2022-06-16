@@ -13,9 +13,9 @@ if (empty($user->user_id)) {
 <div class="container main-content">
     <h2>User Edit</h2>
     <div class="offset-md-4 col-md-4">
-        <?php show_alert(); ?>
-        <form action="../../php/user_edit.php" method="post">
-            <input type="hidden"  name="user_id" value="<?php echo $user->user_id; ?>">
+        <div id="form1_error"></div>
+        <form id="form1" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="user_id" value="<?php echo $user->user_id; ?>">
             <div class="mb-3 mt-3">
                 <label for="email" class="form-label">Name:</label>
                 <input type="text" class="form-control" id="name" name="name" value="<?php echo $user->name; ?>">
@@ -51,8 +51,17 @@ if (empty($user->user_id)) {
                     <option value="0" <?php set_selected('0', $user->status); ?>>Inactive</option>
                 </select>
             </div>
+            <div class="mb-3 mt-3">
+                <label for="signature" class="form-label">Signature:</label>
+                <input type="file" class="form-control" id="signature" name="signature" accept="jpg">
+            </div>
+
+            <div class="mb-3 mt-3">
+                <label for="signature" class="form-label">Profile Photo:</label>
+                <input type="file" class="form-control" id="profile_pic" name="profile_pic" accept="jpg">
+            </div>
             <div class=" form-group text-center">
-                <button type="submit" class="btn btn-success">Update</button>
+                <button type="submit" onclick="updateUser('form1')" class="btn btn-success">Update</button>
             </div>
 
         </form>

@@ -1,56 +1,56 @@
 <?php
 require_once  dirname(__FILE__, 3) . '/partials/header-app.php';
-
-$name='';
-$mobile='';
-$email='';
-$dob='';
-$gender='';
-$address='';
-$status='';
 ?>
 <div class="container main-content">
-<h2>User Add</h2>
+    <h2>User Add</h2>
     <div class="offset-md-4 col-md-4">
-        <?php show_alert(); ?>
-        <form action="../../php/user_manage.php" method="post">           
+        <div id="form1_error"></div>
+        <form id="form1" method="post" enctype="multipart/form-data">
             <div class="mb-3 mt-3">
-                <label for="email" class="form-label">Name:</label>
-                <input type="text" class="form-control" id="name" name="name" value="<?php echo $name; ?>">
+                <label for="email" class="form-label">Name:<span class="required">*</span></label>
+                <input type="text" class="form-control" id="name" name="name" required>
             </div>
             <div class="mb-3 mt-3">
-                <label for="email" class="form-label">Mobile:</label>
-                <input type="text" class="form-control" id="mobile" name="mobile" value="<?php echo $mobile; ?>">
+                <label for="email" class="form-label">Mobile:<span class="required">*</span></label>
+                <input type="text" class="form-control" maxlength="10" id="mobile" name="mobile" required>
             </div>
             <div class="mb-3 mt-3">
-                <label for="email" class="form-label">Email:</label>
-                <input type="email" class="form-control" id="email" name="email" value="<?php echo $email; ?>">
+                <label for="email" class="form-label">Email:<span class="required">*</span></label>
+                <input type="email" class="form-control" id="email" name="email" required>
+            </div>
+            <div class="mb-3 mt-3">
+                <label for="password" class="form-label">Password:<span class="required">*</span></label>
+                <input type="password" class="form-control" id="password" name="password" required>
             </div>
             <div class="mb-3 mt-3">
                 <label for="email" class="form-label">DOB:</label>
-                <input type="date" class="form-control" id="dob" name="dob" value="<?php echo $dob; ?>">
+                <input type="date" class="form-control" id="dob" name="dob">
             </div>
+
+            <div class="mb-3 mt-3">
+                <label for="signature" class="form-label">Signature:</label>
+                <input type="file" class="form-control" id="signature" name="signature" accept="jpg">
+            </div>
+
+            <div class="mb-3 mt-3">
+                <label for="signature" class="form-label">Profile Photo:</label>
+                <input type="file" class="form-control" id="profile_pic" name="profile_pic" accept="jpg">
+            </div>
+
             <div class="mb-3 mt-3">
                 <label for="email" class="form-label">Gender:</label>
                 <select class="form-control" id="gender" name="gender">
-                    <option value="Male" <?php set_selected('Male', $gender); ?>>Male</option>
-                    <option value="Female" <?php set_selected('Female', $gender); ?>>Female</option>
-                    <option value="Other" <?php set_selected('Other', $gender); ?>>Other</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
                 </select>
             </div>
             <div class="mb-3 mt-3">
                 <label for="email" class="form-label">Address:</label>
-                <textarea class="form-control" id="address" name="address"><?php echo $address; ?></textarea>
-            </div>
-            <div class="mb-3 mt-3">
-                <label for="email" class="form-label">Status:</label>
-                <select class="form-control" id="status" name="status">
-                    <option value="1" <?php set_selected('1', $status); ?>>Active</option>
-                    <option value="0" <?php set_selected('0', $status); ?>>Inactive</option>
-                </select>
+                <textarea class="form-control" id="address" name="address"></textarea>
             </div>
             <div class=" form-group text-center">
-                <button type="submit" class="btn btn-success">Update</button>
+                <button type="submit" onclick="addUser('form1')" class="btn btn-success">Add</button>
             </div>
 
         </form>

@@ -1,16 +1,16 @@
 <?php
 require_once  dirname(__FILE__, 3) . '/partials/header-app.php';
 if (!$db_handler->hasAccess('view')) {
-    header('Location:'.BASE_URL.'app/dashboard.php?msg=User Access Denied');
+    header('Location:' . BASE_URL . 'app/dashboard.php?msg=User Access Denied');
 }
 if (!empty($_GET['action'])) {
     $action = $_GET['action'];
     if ($action == 'delete') {
         //delete the user
-        if (!empty($_GET['delete_id'])) {           
-            $user_model->user_id=$_GET['delete_id'];
+        if (!empty($_GET['delete_id'])) {
+            $user_model->user_id = $_GET['delete_id'];
             $user_model->delete();
-            header('Location:'.BASE_URL.'app/user/index.php?msg=User Deleted Succcessfully');
+            header('Location:' . BASE_URL . 'app/user/index.php?msg=User Deleted Succcessfully');
         }
     }
 }
@@ -45,6 +45,7 @@ if (!empty($_GET['action'])) {
             <thead>
                 <tr>
                     <th>#</th>
+                    <th>Profile Pic</th>
                     <th>Name</th>
                     <th>Mobile</th>
                     <th>Email</th>
@@ -61,7 +62,6 @@ if (!empty($_GET['action'])) {
 </div>
 
 <script type="text/javascript">
-
     function deleteRecord(delete_id) {
         var response = confirm('Are you sure want to delete this record?');
         if (response) {
@@ -118,14 +118,17 @@ if (!empty($_GET['action'])) {
         for (var item in jsonData) {
             row = jsonData[item];
             var editURL = BASE_URL + 'app/user/edit.php?user_id=' + row.user_id;
+            var status = (row.status == 1) ? 'Active' : 'Inactive';
+            var profile_pic = '<img src="' + UPLOAD_URL + row.profile_pic + '" class="profile-pic"/>';
             tableHTML += "<tr>";
             tableHTML += "<td>" + count + "</td>";
+            tableHTML += "<td>" + profile_pic + "</td>";
             tableHTML += "<td>" + row.name + "</td>";
             tableHTML += "<td>" + row.mobile + "</td>";
             tableHTML += "<td>" + row.email + "</td>";
             tableHTML += "<td>" + row.gender + "</td>";
             tableHTML += "<td>" + row.dob + "</td>";
-            tableHTML += "<td>" + row.status + "</td>";
+            tableHTML += "<td>" + status + "</td>";
             tableHTML += "<td>";
             tableHTML += '<a class="btn btn-sm btn-primary" href="' + editURL + '">Edit</a>';
             if (row.role_id > 1) {

@@ -16,8 +16,8 @@ $gender = '';
             Register
         </div>
         <div class="card-body">
-            <form id="form1">
-                <div id="error_msg" class="error_msg"></div>
+            <div id="form1_error"></div>
+            <form id="form1" method="post" enctype="multipart/form-data">
                 <div class="mb-3 mt-3">
                     <label for="email" class="form-label">Name:</label>
                     <input type="text" class="form-control" id="name" name="name" value="<?php echo $name; ?>">
@@ -50,8 +50,17 @@ $gender = '';
                     <label for="email" class="form-label">Address:</label>
                     <textarea class="form-control" id="address" name="address"><?php echo $address; ?></textarea>
                 </div>
+                <div class="mb-3 mt-3">
+                    <label for="signature" class="form-label">Signature:</label>
+                    <input type="file" class="form-control" id="signature" name="signature" accept="jpg">
+                </div>
+
+                <div class="mb-3 mt-3">
+                    <label for="signature" class="form-label">Profile Photo:</label>
+                    <input type="file" class="form-control" id="profile_pic" name="profile_pic" accept="jpg">
+                </div>
                 <div class=" form-group text-center">
-                    <button type="button" class="btn btn-success" onclick="register('form1','error_msg')">Create New Account</button>
+                    <button type="submit" class="btn btn-success" onclick="register('form1')">Create New Account</button>
                 </div>
             </form>
         </div>

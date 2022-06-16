@@ -52,8 +52,10 @@ function register()
 
     $isExist = $db_handler->checkUnique('users', 'email', $_POST['email']);
     if (!$isExist) {
-        $isExist = $db_handler->checkUnique('users', 'email', $_POST['email']);
+        $isExist = $db_handler->checkUnique('users', 'mobile', $_POST['mobile']);
         if (!$isExist) {
+            $signature = upload_file('signature');
+            $profile_pic = upload_file('profile_pic');
             $user_model->name = $_POST['name'];
             $user_model->mobile = $_POST['mobile'];
             $user_model->email = $_POST['email'];
@@ -61,8 +63,59 @@ function register()
             $user_model->address = $_POST['address'];
             $user_model->password = $_POST['password'];
             $user_model->dob = $_POST['dob'];
-            $user_model->profile_pic = '';
-            $user_model->signature = '';
+            $user_model->profile_pic = $profile_pic;
+            $user_model->signature =  $signature;
+            $user_model->status = 0;
+            $user_model->role_id = 3;
+            $res = $user_model->add();
+            if ($res) {
+                $data['is_error'] = 0;
+                $data['message'] = "You are registered successfully";
+            }
+        } else {
+            $data['message'] = "This mobile number is already registered";
+        }
+    } else {
+        $data['message'] = "This email id is already registered";
+    }
+    send_response($data);
+}
+
+function add_user()
+{
+    global $user_model, $db_handler;
+    $data = [
+        'is_error' => 1,
+        'message' => 'error'
+    ];
+    if (!is_valid_mobile($_POST['mobile'])) {
+        $data['message'] = "Invalid mobile number format";
+        send_response($data);
+    }
+    if (!is_valid_email($_POST['email'])) {
+        $data['message'] = "Invalid email id format";
+        send_response($data);
+    }
+
+    $isExist = $db_handler->checkUnique('users', 'email', $_POST['email']);
+    if (!$isExist) {
+        $isExist = $db_handler->checkUnique('users', 'mobile', $_POST['mobile']);
+        if (!$isExist) {
+
+            $signature = upload_file('signature');
+            $profile_pic = upload_file('profile_pic');
+
+            $user_model->name = $_POST['name'];
+            $user_model->mobile = $_POST['mobile'];
+            $user_model->email = $_POST['email'];
+            $user_model->gender = $_POST['gender'];
+            $user_model->address = $_POST['address'];
+            $user_model->password = $_POST['password'];
+            $user_model->dob = $_POST['dob'];
+            $user_model->profile_pic = $profile_pic;
+            $user_model->signature =  $signature;
+            $user_model->status = 1;
+            $user_model->role_id = 3;
             $res = $user_model->add();
             if ($res) {
                 $data['is_error'] = 0;
@@ -78,9 +131,72 @@ function register()
 }
 
 
+function update_user()
+{
+    global $user_model, $db_handler;
+    $data = [
+        'is_error' => 1,
+        'message' => 'error'
+    ];
+    if (!is_valid_mobile($_POST['mobile'])) {
+        $data['message'] = "Invalid mobile number format";
+        send_response($data);
+    }
+    if (!is_valid_email($_POST['email'])) {
+        $data['message'] = "Invalid email id format";
+        send_response($data);
+    }
+
+    $isExist = $db_handler->checkUnique('users', 'email', $_POST['email'], 'edit');
+    if (!$isExist) {
+        $isExist = $db_handler->checkUnique('users', 'mobile', $_POST['mobile'], 'edit');
+        if (!$isExist) {
+
+            $signature = upload_file('signature');
+            $profile_pic = upload_file('profile_pic');
+
+            $user_model->user_id = $_POST['user_id'];
+            $user_model->name = $_POST['name'];
+            $user_model->mobile = $_POST['mobile'];
+            $user_model->email = $_POST['email'];
+            $user_model->gender = $_POST['gender'];
+            $user_model->address = $_POST['address'];
+            $user_model->dob = $_POST['dob'];
+            $user_model->profile_pic = $profile_pic;
+            $user_model->signature =  $signature;
+            $user_model->status =  $_POST['status'];;
+            $res = $user_model->update();
+            if ($res) {
+                $data['is_error'] = 0;
+                $data['message'] = "You are registered successfully";
+            }
+        } else {
+            $data['message'] = "This mobile number is already registered";
+        }
+    } else {
+        $data['message'] = "This email id is already registered";
+    }
+    send_response($data);
+}
+
+
+function upload_file($file_control_name)
+{
+    if (!empty($_FILES[$file_control_name]['tmp_name'])) {
+        $filename   = uniqid() . "-" . time();
+        $extension  = pathinfo($_FILES[$file_control_name]["name"], PATHINFO_EXTENSION);
+        $filename   = $filename . "." . $extension;
+        $path = UPLOAD_PATH . $filename;
+        move_uploaded_file($_FILES[$file_control_name]['tmp_name'], $path);
+        return  $filename;
+    } else {
+        return 'default/no-image.jpg';
+    }
+}
+
 function user_list()
 {
-    global $user_model;   
+    global $user_model;
     $data = [
         'is_error' => 0,
         'message' => 'success',
@@ -88,4 +204,3 @@ function user_list()
     ];
     send_response($data);
 }
-

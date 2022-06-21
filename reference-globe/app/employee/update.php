@@ -19,7 +19,7 @@ if (!empty($_GET['action'])) {
         <form action="../php/user_update.php" method="post">
             <?php
             $user = $_SESSION['user'];
-            $selected_gender = "Male";            
+            $selected_gender = "Male";
             ?>
             <div class="mb-3 mt-3">
                 <label for="email" class="form-label">Name:</label>

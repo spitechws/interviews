@@ -11,11 +11,11 @@ if (empty($user->emp_id)) {
 }
 ?>
 <div class="container main-content">
-    <h2>User Edit</h2>
+    <h2>Employee Edit</h2>
     <div class="offset-md-4 col-md-4">
-        <?php show_alert(); ?>
-        <form action="../../php/user_edit.php" method="post">
-            <input type="hidden"  name="emp_id" value="<?php echo $user->emp_id; ?>">
+        <div id="form1_error"></div>
+        <form id="form1" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="emp_id" value="<?php echo $user->emp_id; ?>">
             <div class="mb-3 mt-3">
                 <label for="email" class="form-label">Name:</label>
                 <input type="text" class="form-control" id="name" name="name" value="<?php echo $user->name; ?>">
@@ -29,30 +29,27 @@ if (empty($user->emp_id)) {
                 <input type="email" class="form-control" id="email" name="email" value="<?php echo $user->email; ?>">
             </div>
             <div class="mb-3 mt-3">
-                <label for="email" class="form-label">DOB:</label>
-                <input type="date" class="form-control" id="dob" name="dob" value="<?php echo $user->dob; ?>">
-            </div>
-            <div class="mb-3 mt-3">
-                <label for="email" class="form-label">Gender:</label>
-                <select class="form-control" id="gender" name="gender">
-                    <option value="Male" <?php set_selected('Male', $user->gender); ?>>Male</option>
-                    <option value="Female" <?php set_selected('Female', $user->gender); ?>>Female</option>
-                    <option value="Other" <?php set_selected('Other', $user->gender); ?>>Other</option>
-                </select>
-            </div>
-            <div class="mb-3 mt-3">
                 <label for="email" class="form-label">Address:</label>
                 <textarea class="form-control" id="address" name="address"><?php echo $user->address; ?></textarea>
             </div>
             <div class="mb-3 mt-3">
-                <label for="email" class="form-label">Status:</label>
-                <select class="form-control" id="status" name="status">
-                    <option value="1" <?php set_selected('1', $user->status); ?>>Active</option>
-                    <option value="0" <?php set_selected('0', $user->status); ?>>Inactive</option>
-                </select>
+                <label for="email" class="form-label">DOB:</label>
+                <input type="date" class="form-control" id="dob" name="dob" value="<?php echo $user->dob; ?>">
+            </div>
+            <div class="mb-3 mt-3">
+                <label for="email" class="form-label">Date of Joining:</label>
+                <input type="date" class="form-control" id="doj" name="doj" value="<?php echo $user->doj; ?>">
+            </div>
+            <div class="mb-3 mt-3">
+                <label for="email" class="form-label">Blood Group:</label>
+                <input type="text" class="form-control" id="blood_group" name="blood_group" value="<?php echo $user->blood_group; ?>">
+            </div>
+            <div class="mb-3 mt-3">
+                <label for="email" class="form-label">Designation:</label>
+                <input type="text" class="form-control" id="designation" name="designation" value="<?php echo $user->designation; ?>">
             </div>
             <div class=" form-group text-center">
-                <button type="submit" class="btn btn-success">Update</button>
+                <button type="submit" onclick="updateEmp('form1')" class="btn btn-success">Update</button>
             </div>
 
         </form>

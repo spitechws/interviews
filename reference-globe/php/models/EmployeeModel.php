@@ -24,8 +24,8 @@ class EmployeeModel extends BaseModel
 
     public function add()
     {
-        $sql = "INSERT INTO users(`name`,`mobile`,`email`,`address`,`designation`,`dob`,`doj`,`blood_group`)";
-        $sql .= " VALUES(:name,:mobile,:email,:address,:designation,:dob,:doj,:blood_group,:signature,:role_id)";
+        $sql = "INSERT INTO " . $this->tbl_name . "(`name`,`mobile`,`email`,`address`,`designation`,`dob`,`doj`,`blood_group`)";
+        $sql .= " VALUES(:name,:mobile,:email,:address,:designation,:dob,:doj,:blood_group)";
         $params = [
             'email' => $this->email,
             'name' => $this->name,
@@ -41,19 +41,18 @@ class EmployeeModel extends BaseModel
 
     public function update()
     {
-        $sql = 'UPDATE ' . $this->tbl_name . ' SET `name`=:name, `mobile`=:mobile, `email`=:email, `address`=:address, `gender`=:gender, 
-        `dob`=:dob,`profile_pic`=:profile_pic,`signature`=:signature,`status`=:status  WHERE `emp_id`=:emp_id';
+        $sql = 'UPDATE ' . $this->tbl_name . ' SET `name`=:name, `mobile`=:mobile, `email`=:email, `address`=:address, 
+        `dob`=:dob,`blood_group`=:blood_group,`designation`=:designation,`doj`=:doj  WHERE `emp_id`=:emp_id';
         $params = [
             'email' => $this->email,
             'name' => $this->name,
             'mobile' => $this->mobile,
             'address' => $this->address,
-            'gender' => $this->gender,
-            'profile_pic' => $this->profile_pic,
-            'signature' => $this->signature,
+            'blood_group' => $this->blood_group,
+            'designation' => $this->designation,
+            'doj' => date('Y-m-d', strtotime($this->doj)),
             'dob' => date('Y-m-d', strtotime($this->dob)),
-            'emp_id' => $this->emp_id,
-            'status' => $this->status
+            'emp_id' => $this->emp_id
         ];
         return $this->db->update($sql, $params);
     }
@@ -80,7 +79,7 @@ class EmployeeModel extends BaseModel
 
     public function fetchAll()
     {
-        $sql = "SELECT * FROM $this->tbl_name";
+        $sql = "SELECT * FROM " . $this->tbl_name . " where 1 ";
         $params = [];
         if (!empty($_GET['search_key'])) {
             $sql .= "and (`name` like :search_key or `mobile` like :search_key or email like :search_key)";

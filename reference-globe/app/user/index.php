@@ -3,17 +3,7 @@ require_once  dirname(__FILE__, 3) . '/partials/header-app.php';
 if (!$db_handler->hasAccess('view')) {
     header('Location:' . BASE_URL . 'app/dashboard.php?msg=User Access Denied');
 }
-if (!empty($_GET['action'])) {
-    $action = $_GET['action'];
-    if ($action == 'delete') {
-        //delete the user
-        if (!empty($_GET['delete_id'])) {
-            $user_model->user_id = $_GET['delete_id'];
-            $user_model->delete();
-            header('Location:' . BASE_URL . 'app/user/index.php?msg=User Deleted Succcessfully');
-        }
-    }
-}
+
 ?>
 <div class="container main-content">
 
@@ -65,7 +55,7 @@ if (!empty($_GET['action'])) {
     function deleteRecord(delete_id) {
         var response = confirm('Are you sure want to delete this record?');
         if (response) {
-            window.location = BASE_URL + 'app/user/index.php?action=delete&delete_id=' + delete_id;
+            deleteUser(delete_id);
         }
     }
 
@@ -132,7 +122,7 @@ if (!empty($_GET['action'])) {
             tableHTML += "<td>";
             tableHTML += '<a class="btn btn-sm btn-primary" href="' + editURL + '">Edit</a>';
             if (row.role_id > 1) {
-                tableHTML += '&nbsp;<a class="btn btn-sm btn-danger" onclick="userDelete(' + row.user_id + ')">Delete</a>';
+                tableHTML += '&nbsp;<a class="btn btn-sm btn-danger" onclick="deleteRecord(' + row.user_id + ')">Delete</a>';
             }
             tableHTML += "</td>";
             tableHTML += "</tr>";

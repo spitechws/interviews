@@ -119,7 +119,7 @@ function add_user()
             $res = $user_model->add();
             if ($res) {
                 $data['is_error'] = 0;
-                $data['message'] = "You are registered successfully";
+                $data['message'] = "User created successfully";
             }
         } else {
             $data['message'] = "This mobile number is already registered";
@@ -127,6 +127,18 @@ function add_user()
     } else {
         $data['message'] = "This email id is already registered";
     }
+    send_response($data);
+}
+
+function user_delete()
+{
+    global $user_model;
+    $user_model->user_id = $_GET['delete_id'];
+    $user_model->delete();
+    $data = [
+        'is_error' => 0,
+        'message' => 'User deleted successfully'
+    ];
     send_response($data);
 }
 
@@ -164,11 +176,11 @@ function update_user()
             $user_model->dob = $_POST['dob'];
             $user_model->profile_pic = $profile_pic;
             $user_model->signature =  $signature;
-            $user_model->status =  $_POST['status'];;
+            $user_model->status =  $_POST['status'];
             $res = $user_model->update();
             if ($res) {
                 $data['is_error'] = 0;
-                $data['message'] = "You are registered successfully";
+                $data['message'] = "User details updated successfully";
             }
         } else {
             $data['message'] = "This mobile number is already registered";

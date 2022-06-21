@@ -15,6 +15,7 @@ if (empty($_SESSION['user']->user_id)) {
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
   <link href="<?php echo BASE_URL ?>assets/css/style.css" rel="stylesheet">
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <?php require_once 'js_functions.php'; ?>
 </head>
 
 <body>

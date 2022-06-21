@@ -2,14 +2,14 @@
 session_start();
 error_reporting(E_ALL);
 
-define('APP_PATH', 'D:\wamp64\www\spsoni\interviews\reference-globe' . DIRECTORY_SEPARATOR);
-define('BASE_URL', 'http://localhost/spsoni/interviews/reference-globe/');
+define('APP_PATH', "D:/wamp64/www/spsoni/interviews/reference-globe/");
+define('BASE_URL', 'http://localhost:8383/spsoni/interviews/reference-globe/');
 
 
-define('UPLOAD_PATH', APP_PATH.'uploads'.DIRECTORY_SEPARATOR);
-define('UPLOAD_URL', BASE_URL.'uploads'.DIRECTORY_SEPARATOR);
+define('UPLOAD_PATH', APP_PATH . 'uploads/');
+define('UPLOAD_URL', BASE_URL . 'uploads/');
 
-define('API_BASE_URL', BASE_URL.'rest-api/api.php');
+define('API_BASE_URL', BASE_URL . 'rest-api/api.php');
 
 define('HOST', 'localhost');
 define('USER', 'root');

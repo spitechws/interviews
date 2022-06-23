@@ -102,8 +102,8 @@ function add_user()
         $isExist = $db_handler->checkUnique('users', 'mobile', $_POST['mobile']);
         if (!$isExist) {
 
-            $signature = upload_file('signature');
-            $profile_pic = upload_file('profile_pic');
+            $signature = upload_file('signature', $_POST['signature_old']);
+            $profile_pic = upload_file('profile_pic', $_POST['profile_pic_old']);
 
             $user_model->name = $_POST['name'];
             $user_model->mobile = $_POST['mobile'];
@@ -164,8 +164,8 @@ function update_user()
         $isExist = $db_handler->checkUnique('users', 'mobile', $_POST['mobile'], 'edit');
         if (!$isExist) {
 
-            $signature = upload_file('signature');
-            $profile_pic = upload_file('profile_pic');
+            $signature = upload_file('signature', $_POST['signature_old']);
+            $profile_pic = upload_file('profile_pic', $_POST['profile_pic_old']);
 
             $user_model->user_id = $_POST['user_id'];
             $user_model->name = $_POST['name'];
@@ -179,6 +179,12 @@ function update_user()
             $user_model->status =  $_POST['status'];
             $res = $user_model->update();
             if ($res) {
+                if ($_POST['signature_old'] != $signature) {
+                    delete_media($_POST['signature_old']);
+                }
+                if ($_POST['profile_pic_old'] != $profile_pic) {
+                    delete_media($_POST['profile_pic_old']);
+                }
                 $data['is_error'] = 0;
                 $data['message'] = "User details updated successfully";
             }
@@ -212,8 +218,8 @@ function update_user_profile()
     if (!$isExist) {
         $isExist = $db_handler->checkUnique('users', 'mobile', $_POST['mobile'], 'edit');
         if (!$isExist) {
-            $signature = upload_file('signature');
-            $profile_pic = upload_file('profile_pic');
+            $signature = upload_file('signature', $_POST['signature_old']);
+            $profile_pic = upload_file('profile_pic', $_POST['profile_pic_old']);
 
             $user_model->user_id = $_SESSION['user']->user_id;
             $user_model->status = $_SESSION['user']->status;
@@ -227,12 +233,12 @@ function update_user_profile()
             $user_model->signature =  $signature;
             $res = $user_model->update();
             if ($res) {
-                $sql = 'SELECT t1.*,t2.role_name FROM users as t1 LEFT JOIN roles as t2 on t1.role_id=t2.role_id WHERE t1.user_id=:user_id';
-                $params = [
-                    'user_id' => $_SESSION['user']->user_id
-                ];
-                $user = $user_model->fetch($sql, $params);
-                $_SESSION['user'] = $user;
+                if ($_POST['signature_old'] != $signature) {
+                    delete_media($_POST['signature_old']);
+                }
+                if ($_POST['profile_pic_old'] != $profile_pic) {
+                    delete_media($_POST['profile_pic_old']);
+                }
                 $data['is_error'] = 0;
                 $data['message'] = "Profile updated successfully";
             }
@@ -246,7 +252,7 @@ function update_user_profile()
 }
 
 
-function upload_file($file_control_name)
+function upload_file($file_control_name, $default_value = '')
 {
     if (!empty($_FILES[$file_control_name]['tmp_name'])) {
         $filename   = uniqid() . "-" . time();
@@ -256,7 +262,7 @@ function upload_file($file_control_name)
         move_uploaded_file($_FILES[$file_control_name]['tmp_name'], $path);
         return  $filename;
     } else {
-        return 'default/no-image.jpg';
+        return $default_value;
     }
 }
 

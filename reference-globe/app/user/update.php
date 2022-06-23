@@ -51,14 +51,16 @@ if (!empty($_GET['action'])) {
             </div>
             <div class="mb-3 mt-3">
                 <label for="signature" class="form-label">Signature:</label>
-                <?php show_image($user->signature); ?>
-                <input type="file" class="form-control" id="signature" name="signature" accept="jpg">
+                <?php show_image($user->signature, array('width' => 100, 'id' => 'signature_preview')); ?>
+                <input type="hidden" name="signature_old" value="<?php echo $user->signature ?>" />
+                <input type="file" class="form-control" id="signature" name="signature" accept="image/*" onchange="loadFile(event,'signature_preview')">
             </div>
 
             <div class="mb-3 mt-3">
                 <label for="profile_pic" class="form-label">Profile Photo:</label>
-                <?php show_image($user->profile_pic); ?>
-                <input type="file" class="form-control" id="profile_pic" name="profile_pic" accept="jpg">
+                <?php show_image($user->profile_pic, array('width' => 100, 'id' => 'profile_pic_preview')); ?>
+                <input type="hidden" name="profile_pic_old" value="<?php echo $user->profile_pic ?>" />
+                <input type="file" class="form-control" id="profile_pic" name="profile_pic" accept="image/*" onchange="loadFile(event,'profile_pic_preview')">
             </div>
             <div class=" form-group text-center">
                 <button type="submit" onclick="updateUserProfile('form1')" class="btn btn-success">Update</button>

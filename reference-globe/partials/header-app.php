@@ -16,6 +16,15 @@ if (empty($_SESSION['user']->user_id)) {
   <link href="<?php echo BASE_URL ?>assets/css/style.css" rel="stylesheet">
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
   <?php require_once 'js_functions.php'; ?>
+  <script>
+    function loadFile(event, img_id) {
+      var output = document.getElementById(img_id);
+      output.src = URL.createObjectURL(event.target.files[0]);
+      output.onload = function() {
+        URL.revokeObjectURL(output.src) // free memory
+      }
+    };
+  </script>
 </head>
 
 <body>

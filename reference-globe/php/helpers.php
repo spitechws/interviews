@@ -42,7 +42,7 @@ function show_image($file_name, $attribute = [])
     if (!is_dir($file_path) && file_exists($file_path)) {
         $src = UPLOAD_URL . $file_name;
     } else {
-        $src = UPLOAD_URL . 'default/no-image.png';
+        $src = UPLOAD_URL . 'default/no-image.jpg';
     }
 
     $attribute_string = '';
@@ -51,4 +51,12 @@ function show_image($file_name, $attribute = [])
     }
     $html = '<img src="' . $src . '" ' . $attribute_string . '/>';
     echo $html;
+}
+
+function delete_media($file_name)
+{
+    $file_path = UPLOAD_PATH . $file_name;
+    if (!is_dir($file_path) && file_exists($file_path)) {
+        unlink($file_path);
+    }
 }

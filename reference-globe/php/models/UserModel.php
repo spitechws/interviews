@@ -70,11 +70,11 @@ class UserModel extends BaseModel
         //----removing old files
         $user = $this->fetchByPk();
         $signature = UPLOAD_PATH . $user->signature;
-        if (file_exists($signature)) {
+        if (!is_dir($signature) && file_exists($signature)) {
             unlink($signature);
         }
         $profile_pic = UPLOAD_PATH . $user->profile_pic;
-        if (file_exists($profile_pic)) {
+        if (file_exists($profile_pic) && !is_dir($profile_pic)) {
             unlink($profile_pic);
         }
         return $this->db->update($sql, $params);

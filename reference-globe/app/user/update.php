@@ -15,11 +15,11 @@ if (!empty($_GET['action'])) {
 ?>
 <div class="container main-content">
     <div class="offset-md-4 col-md-4">
-        <?php show_alert(); ?>
-        <form action="../php/user_update.php" method="post">
+        <div id="form1_error"></div>
+        <form id="form1" method="post" enctype="multipart/form-data">
             <?php
             $user = $_SESSION['user'];
-            $selected_gender = "Male";            
+            $selected_gender = "Male";
             ?>
             <div class="mb-3 mt-3">
                 <label for="email" class="form-label">Name:</label>
@@ -49,8 +49,19 @@ if (!empty($_GET['action'])) {
                 <label for="email" class="form-label">Address:</label>
                 <textarea class="form-control" id="address" name="address"><?php echo $user->address; ?></textarea>
             </div>
+            <div class="mb-3 mt-3">
+                <label for="signature" class="form-label">Signature:</label>
+                <?php show_image($user->signature); ?>
+                <input type="file" class="form-control" id="signature" name="signature" accept="jpg">
+            </div>
+
+            <div class="mb-3 mt-3">
+                <label for="profile_pic" class="form-label">Profile Photo:</label>
+                <?php show_image($user->profile_pic); ?>
+                <input type="file" class="form-control" id="profile_pic" name="profile_pic" accept="jpg">
+            </div>
             <div class=" form-group text-center">
-                <button type="submit" class="btn btn-success">Update</button>
+                <button type="submit" onclick="updateUserProfile('form1')" class="btn btn-success">Update</button>
             </div>
 
         </form>

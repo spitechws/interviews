@@ -112,6 +112,35 @@
         });
     }
 
+    function updateUserProfile(form_id) {
+        var form = $('#' + form_id);
+        var response_container = $("#" + form_id + "_error");
+        $("#" + form_id).submit(function(e) {
+            e.preventDefault();
+            var formData = new FormData(this);
+            $.ajax({
+                url: API_BASE_URL + '?action=update_user_profile',
+                type: form.attr('method'),
+                data: formData,
+                success: function(response) {
+                    if (response.is_error == 0) {
+                        form[0].reset();
+                        window.location.href = BASE_URL + 'app/dashboard.php?msg=' + response.message;
+                    } else {
+                        showMessage(response_container, 'error', response.message)
+                    }
+                },
+                error: function(error) {
+                    showMessage(response_container, 'error', error)
+                },
+                async: false,
+                cache: false,
+                processData: false,
+                contentType: false,
+            });
+        });
+    }
+
 
     function deleteUser(delete_id) {
 

@@ -1,6 +1,5 @@
 <?php
 require_once dirname(__FILE__, 2) . '/config.php';
-require_once APP_PATH . 'php/functions.php';
 if (empty($_SESSION['user']->user_id)) {
   header('location:' . BASE_URL . 'index.php');
 }
@@ -14,13 +13,18 @@ if (empty($_SESSION['user']->user_id)) {
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-  <link href="<?PHP echo BASE_URL ?>assets/css/style.css" rel="stylesheet">
+  <link href="<?php echo BASE_URL ?>assets/css/style.css" rel="stylesheet">
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <?php require_once 'js_functions.php'; ?>
   <script>
-    var BASE_URL = '<?php echo BASE_URL; ?>';
-    var API_BASE_URL = '<?php echo API_BASE_URL; ?>';
+    function loadFile(event, img_id) {
+      var output = document.getElementById(img_id);
+      output.src = URL.createObjectURL(event.target.files[0]);
+      output.onload = function() {
+        URL.revokeObjectURL(output.src) // free memory
+      }
+    };
   </script>
-  <script src="<?PHP echo BASE_URL ?>assets/js/app_functions.js"></script>
 </head>
 
 <body>
@@ -33,10 +37,18 @@ if (empty($_SESSION['user']->user_id)) {
       <div class="collapse navbar-collapse" id="collapsibleNavbar">
         <ul class="navbar-nav">
           <?php
-          if ($db_handler->hasAccess('view')) {
+          if ($db_handler->hasAccess('user', 'view')) {
           ?>
             <li class="nav-item">
-              <a class="nav-link" href="<?php echo BASE_URL ?>app/user/users.php">Users</a>
+              <a class="nav-link" href="<?php echo BASE_URL ?>app/user/">Users</a>
+            </li>
+          <?php } ?>
+
+          <?php
+          if ($db_handler->hasAccess('employee', 'view')) {
+          ?>
+            <li class="nav-item">
+              <a class="nav-link" href="<?php echo BASE_URL ?>app/employee/">Employee</a>
             </li>
           <?php } ?>
 
@@ -44,7 +56,7 @@ if (empty($_SESSION['user']->user_id)) {
           if ($_SESSION['user']->role_id == 3) {
           ?>
             <li class="nav-item">
-              <a class="nav-link" href="<?php echo BASE_URL ?>app/user/user-update.php">Update Profile</a>
+              <a class="nav-link" href="<?php echo BASE_URL ?>app/user/update.php">Update Profile</a>
             </li>
           <?php } ?>
           <li class="nav-item">

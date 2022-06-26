@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Jun 15, 2022 at 11:55 AM
+-- Generation Time: Jun 21, 2022 at 02:40 PM
 -- Server version: 8.0.21
 -- PHP Version: 7.4.9
 
@@ -20,6 +20,28 @@ SET time_zone = "+00:00";
 --
 -- Database: `reference_globe`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `employee`
+--
+
+DROP TABLE IF EXISTS `employee`;
+CREATE TABLE IF NOT EXISTS `employee` (
+  `emp_id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `mobile` varchar(13) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `email` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `designation` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `doj` date NOT NULL,
+  `dob` date NOT NULL,
+  `address` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `blood_group` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  PRIMARY KEY (`emp_id`),
+  UNIQUE KEY `mobile` (`mobile`),
+  UNIQUE KEY `email` (`email`)
+) ENGINE=MyISAM AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -59,23 +81,21 @@ CREATE TABLE IF NOT EXISTS `users` (
   `address` varchar(150) COLLATE utf8mb4_general_ci NOT NULL,
   `role_id` int NOT NULL,
   `dob` date NOT NULL,
-  `profile_pic` text COLLATE utf8mb4_general_ci NOT NULL,
-  `signature` text COLLATE utf8mb4_general_ci NOT NULL,
+  `profile_pic` varchar(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'default/no-image.jpg',
+  `signature` varchar(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'default/no-image.jpg',
   `gender` enum('Male','Female','Other') COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'Male',
-  `status` enum('1','0') COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0',
-  PRIMARY KEY (`user_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `status` int NOT NULL DEFAULT '0',
+  PRIMARY KEY (`user_id`),
+  UNIQUE KEY `mobile` (`mobile`),
+  UNIQUE KEY `email` (`email`)
+) ENGINE=MyISAM AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `users`
 --
 
 INSERT INTO `users` (`user_id`, `name`, `mobile`, `email`, `password`, `address`, `role_id`, `dob`, `profile_pic`, `signature`, `gender`, `status`) VALUES
-(1, 'Sita100', '8888538591', 'ramesh@gmail.com', '1ab7bc8a726cd0f7137d190e474cdde7', 'Bangalore', 3, '2022-06-23', '', '', 'Male', '1'),
-(4, 'Susech1', '8888538590', 'suresh@gmail.com', '1ab7bc8a726cd0f7137d190e474cdde7', 'Delhi', 1, '2022-06-23', '', '', 'Male', '1'),
-(5, 'Mohan', '8888538592', 'mohan@gmail.com', '1ab7bc8a726cd0f7137d190e474cdde7', 'Delhi', 2, '2022-06-23', '', '', 'Male', '0'),
-(6, 'ramesh1', '1234567890', 'ramesh1@gmail.com', '1ab7bc8a726cd0f7137d190e474cdde7', '', 1, '2022-06-24', '', '', 'Male', '0'),
-(7, 'ramesh12', '7828796979', 'ramesh12@gmail.com', '1ab7bc8a726cd0f7137d190e474cdde7', 'sdsdsds1', 1, '2022-07-08', '', '', 'Male', '0');
+(11, 'SuperAdmin', '7828796979', 'superadmin@gmail.com', '1ab7bc8a726cd0f7137d190e474cdde7', '', 1, '1989-09-30', 'default/no-image.jpg', 'default/no-image.jpg', 'Female', 1);
 
 -- --------------------------------------------------------
 

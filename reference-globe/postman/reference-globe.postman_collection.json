@@ -1,0 +1,65 @@
+{
+	"info": {
+		"_postman_id": "0c797841-8731-40e0-8972-441aad52a51e",
+		"name": "reference-globe",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "10884282"
+	},
+	"item": [
+		{
+			"name": "update_user",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{local}}?action=get_users",
+					"host": [
+						"{{local}}"
+					],
+					"query": [
+						{
+							"key": "action",
+							"value": "get_users"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "email",
+							"value": "spsoni.acc@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "1234",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{local}}?action=login",
+					"host": [
+						"{{local}}"
+					],
+					"query": [
+						{
+							"key": "action",
+							"value": "login"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

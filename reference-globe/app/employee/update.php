@@ -1,21 +1,26 @@
 <?php
 require_once  dirname(__FILE__, 3) . '/partials/header-app.php';
 
-if (empty($_GET['user_id'])) {
-    invalid_action();
-}
-$user_model->user_id = $_GET['user_id'];
-$user = $user_model->fetchByPk();
-if (empty($user->user_id)) {
-    invalid_action();
+if (!empty($_GET['action'])) {
+    $action = $_GET['action'];
+    if ($action == 'delete') {
+        //delete the user
+        if (!empty($_GET['user_id'])) {
+            $sql = 'DELETE FROM users where user_id=:user_id';
+            $res = $db_handler->delete($sql, ['user_id' => $_GET['user_id']]);
+            header('Location:users.php?msg=User Deleted Succcessfully');
+        }
+    }
 }
 ?>
 <div class="container main-content">
-    <h2>User Edit</h2>
     <div class="offset-md-4 col-md-4">
         <?php show_alert(); ?>
-        <form action="../../php/user_edit.php" method="post">
-            <input type="hidden"  name="user_id" value="<?php echo $user->user_id; ?>">
+        <form action="../php/user_update.php" method="post">
+            <?php
+            $user = $_SESSION['user'];
+            $selected_gender = "Male";
+            ?>
             <div class="mb-3 mt-3">
                 <label for="email" class="form-label">Name:</label>
                 <input type="text" class="form-control" id="name" name="name" value="<?php echo $user->name; ?>">
@@ -43,13 +48,6 @@ if (empty($user->user_id)) {
             <div class="mb-3 mt-3">
                 <label for="email" class="form-label">Address:</label>
                 <textarea class="form-control" id="address" name="address"><?php echo $user->address; ?></textarea>
-            </div>
-            <div class="mb-3 mt-3">
-                <label for="email" class="form-label">Status:</label>
-                <select class="form-control" id="status" name="status">
-                    <option value="1" <?php set_selected('1', $user->status); ?>>Active</option>
-                    <option value="0" <?php set_selected('0', $user->status); ?>>Inactive</option>
-                </select>
             </div>
             <div class=" form-group text-center">
                 <button type="submit" class="btn btn-success">Update</button>

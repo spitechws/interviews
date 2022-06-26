@@ -30,13 +30,13 @@ class DB
             $stmt->execute();
         }
         if ($is_debug) {
-            debug($params,0);
-            debug($stmt,0);
+            debug($params, 0);
+            debug($stmt, 0);
         }
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
-    public function delete($qry = '', $params = [])
+    public function delete($qry = '', $params = [], $is_debug = 0)
     {
         $stmt = $this->conn->prepare($qry);
         if (!empty($params)) {
@@ -44,11 +44,19 @@ class DB
         } else {
             $stmt->execute();
         }
+        if ($is_debug) {
+            debug($params, 0);
+            debug($stmt, 1);
+        }
     }
 
-    public function update($qry = '', $params = [])
+    public function update($qry = '', $params = [], $is_debug = 0)
     {
         $stmt = $this->conn->prepare($qry);
+        if ($is_debug) {
+            debug($params, 0);
+            debug($stmt, 1);
+        }
         return $stmt->execute($params);
     }
 
@@ -78,14 +86,26 @@ class DB
         }
     }
 
-    public function checkUnique($table_name, $field_name, $field_value)
+    public function checkUnique($table_name, $field_name, $field_value, $action = 'add')
     {
+        $response = FALSE;
         $sql = "SELECT * FROM $table_name where $field_name=:field_value";
         $params = [
             "field_value" => $field_value
         ];
         $stmt = $this->conn->prepare($sql);
         $stmt->execute($params);
-        return $stmt->fetch(\PDO::FETCH_ASSOC);
+        $data = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        if ($action == 'add') {
+            if (!empty($data) && count($data) > 0) {
+                $response = TRUE;
+            }
+        } else {
+            //debug("count:".count($data));
+            if (!empty($data) && count($data) > 1) {
+                $response = TRUE;
+            }
+        }
+        return $response;
     }
 }

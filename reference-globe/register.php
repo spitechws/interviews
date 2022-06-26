@@ -16,14 +16,15 @@ $gender = '';
             Register
         </div>
         <div class="card-body">
-            <form action="php/user_register.php" method="post">
+            <div id="form1_error"></div>
+            <form id="form1" method="post" enctype="multipart/form-data">
                 <div class="mb-3 mt-3">
                     <label for="email" class="form-label">Name:</label>
                     <input type="text" class="form-control" id="name" name="name" value="<?php echo $name; ?>">
                 </div>
                 <div class="mb-3 mt-3">
                     <label for="email" class="form-label">Mobile:</label>
-                    <input type="text" class="form-control" id="mobile" name="mobile" value="<?php echo $mobile; ?>">
+                    <input type="text" class="form-control" maxlength="10" id="mobile" name="mobile" value="<?php echo $mobile; ?>">
                 </div>
                 <div class="mb-3 mt-3">
                     <label for="email" class="form-label">Email:</label>
@@ -49,8 +50,17 @@ $gender = '';
                     <label for="email" class="form-label">Address:</label>
                     <textarea class="form-control" id="address" name="address"><?php echo $address; ?></textarea>
                 </div>
+                <div class="mb-3 mt-3">
+                    <label for="signature" class="form-label">Signature:</label>
+                    <input type="file" class="form-control" id="signature" name="signature" accept="jpg">
+                </div>
+
+                <div class="mb-3 mt-3">
+                    <label for="signature" class="form-label">Profile Photo:</label>
+                    <input type="file" class="form-control" id="profile_pic" name="profile_pic" accept="jpg">
+                </div>
                 <div class=" form-group text-center">
-                    <button type="submit" class="btn btn-success">Create New Account</button>
+                    <button type="submit" class="btn btn-success" onclick="register('form1')">Create New Account</button>
                 </div>
             </form>
         </div>
